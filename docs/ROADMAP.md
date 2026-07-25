@@ -3,24 +3,24 @@
 ## Fase 1 - Análisis
 
 * [x] Definición del dominio
-* [ ] Modelo entidad-relación
-* [ ] Casos de uso
+* [x] Modelo entidad-relación
+* [x] Casos de uso
 
 ## Fase 2 - Infraestructura
 
-* [ ] Laravel
+* [x] Laravel
 * [ ] Docker
-* [ ] PostgreSQL
-* [ ] Filament
-* [ ] Livewire
-* [ ] Autenticación
-* [ ] Roles y permisos
+* [x] PostgreSQL
+* [x] Filament
+* [x] Livewire
+* [x] Autenticación
+* [x] Roles y permisos
 
 ## Fase 3 - MVP
 
-* [ ] Iglesias
-* [ ] Ministerios
-* [ ] Roles
+* [x] Iglesias
+* [x] Ministerios
+* [x] Roles
 * [ ] Servidores
 * [ ] Usuarios
 * [ ] Disponibilidad
