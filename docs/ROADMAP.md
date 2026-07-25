@@ -1,25 +1,41 @@
 # Roadmap
 
-## MVP
+## Fase 1 - Análisis
 
-* [ ] Análisis funcional
-* [ ] Modelo de datos
-* [ ] Configuración del proyecto Laravel
+* [x] Definición del dominio
+* [ ] Modelo entidad-relación
+* [ ] Casos de uso
+
+## Fase 2 - Infraestructura
+
+* [ ] Laravel
+* [ ] Docker
+* [ ] PostgreSQL
+* [ ] Filament
+* [ ] Livewire
 * [ ] Autenticación
-* [ ] Administración de iglesias
-* [ ] Administración de usuarios
-* [ ] Administración de voluntarios
-* [ ] Administración de roles
-* [ ] Administración de eventos
-* [ ] Registro de disponibilidad
-* [ ] Asignación de voluntarios
+* [ ] Roles y permisos
+
+## Fase 3 - MVP
+
+* [ ] Iglesias
+* [ ] Ministerios
+* [ ] Roles
+* [ ] Servidores
+* [ ] Usuarios
+* [ ] Disponibilidad
+* [ ] Eventos Programados
+* [ ] Eventos
+* [ ] Asignaciones
 * [ ] Panel de administración
-* [ ] Despliegue
 
-## Futuro
+## Fase 4 - Mejoras
 
-* [ ] Notificaciones
 * [ ] Confirmación de asistencia
-* [ ] Asignación automática
+* [ ] Notificaciones por email
+* [ ] Notificaciones push
+* [ ] WhatsApp
+* [ ] Generación automática de eventos
+* [ ] Disponibilidad recurrente
 * [ ] Estadísticas
 * [ ] Aplicación móvil

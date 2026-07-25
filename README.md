@@ -1,34 +1,32 @@
 # Coordina
 
-Sistema web libre para administrar personas, roles, disponibilidad y asignaciones en eventos recurrentes.
+Coordina es una aplicación web libre para administrar personas, roles, disponibilidad y asignaciones de servicio en eventos recurrentes.
 
-Actualmente el proyecto está orientado a la coordinación de voluntarios dentro de una iglesia, aunque fue diseñado con la idea de poder adaptarse a otros tipos de organizaciones que trabajen con equipos y turnos.
+El proyecto nace con el objetivo de simplificar la organización de equipos de servicio dentro de iglesias, reemplazando planillas de cálculo y coordinación mediante aplicaciones de mensajería por una única plataforma web.
 
-## ¿Qué hace?
+Aunque el primer objetivo está orientado a iglesias, el diseño busca ser lo suficientemente flexible para adaptarse a cualquier organización que coordine equipos de trabajo con roles y eventos recurrentes.
 
-Coordina permite:
+## Funcionalidades del MVP
 
-* Administrar iglesias.
-* Administrar voluntarios (levitas).
-* Definir roles de servicio.
-* Crear eventos recurrentes.
-* Registrar la disponibilidad de cada persona.
-* Asignar personas a cada rol de un evento.
-* Detectar roles sin cubrir.
-* Enviar notificaciones y recordatorios (funcionalidad futura).
-
-## Objetivo
-
-Reducir la coordinación manual realizada mediante grupos de mensajería y centralizar toda la planificación en una única aplicación.
+* Administración de iglesias.
+* Administración de ministerios.
+* Administración de servidores.
+* Administración de roles.
+* Administración de eventos recurrentes.
+* Generación manual de eventos.
+* Registro de disponibilidad.
+* Asignación de servidores a eventos.
+* Administración de usuarios y permisos.
 
 ## Stack tecnológico
 
+* PHP 8.4+
 * Laravel
-* Livewire
+* Livewire||
 * Filament
 * PostgreSQL
 * Docker
 
 ## Estado
 
-🚧 En planificación y desarrollo inicial (MVP).
+🚧 En etapa de análisis y diseño del MVP.

@@ -1,9 +1,9 @@
 # Visión
 
-Coordina busca simplificar la organización de equipos de servicio para eventos recurrentes.
+Coordina busca convertirse en una plataforma sencilla para planificar y coordinar equipos de servicio.
 
-El objetivo es reemplazar la coordinación manual mediante grupos de mensajería por una aplicación web que permita administrar personas, roles, disponibilidad y asignaciones de manera centralizada.
+El objetivo principal es centralizar la administración de servidores, ministerios, roles, disponibilidades y asignaciones, reduciendo la coordinación manual realizada mediante planillas de cálculo y grupos de mensajería.
 
-En una primera etapa el sistema estará orientado a iglesias, donde cada organización podrá administrar sus propios eventos y voluntarios. Sin embargo, el diseño buscará ser lo suficientemente flexible para reutilizarse en otras organizaciones con necesidades similares.
+El MVP priorizará la simplicidad y la rapidez de uso, evitando automatizaciones complejas hasta validar el flujo de trabajo real de los coordinadores.
 
-El foco del MVP será resolver el problema de la planificación semanal de forma simple, rápida y confiable.
+En futuras versiones podrán incorporarse funciones como generación automática de eventos, notificaciones, asignaciones inteligentes, estadísticas y aplicación móvil.
