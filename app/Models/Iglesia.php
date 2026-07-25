@@ -11,4 +11,14 @@ class Iglesia extends Model
         'direccion',
         'activo',
     ];
+
+    public function usuarios()
+    {
+        return $this->hasMany(User::class);
+    }
+
+    public function ministerios()
+    {
+        return $this->hasMany(Ministerio::class);
+    }
 }
