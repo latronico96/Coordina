@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Ministerio extends Model
 {
     protected $fillable = [
+        'iglesia_id',
         "nombre",
         "descripcion",
         "activo"
@@ -15,5 +16,10 @@ class Ministerio extends Model
     public function iglesia()
     {
         return $this->belongsTo(Iglesia::class);
+    }
+
+    public function rolesServicio()
+    {
+        return $this->hasMany(RolServicio::class);
     }
 }
