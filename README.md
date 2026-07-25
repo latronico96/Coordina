@@ -22,7 +22,7 @@ Aunque el primer objetivo está orientado a iglesias, el diseño busca ser lo su
 
 * PHP 8.4+
 * Laravel
-* Livewire||
+* Livewire
 * Filament
 * PostgreSQL
 * Docker
