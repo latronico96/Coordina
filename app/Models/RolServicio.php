@@ -18,4 +18,9 @@ class RolServicio extends Model
     {
         return $this->belongsTo(Ministerio::class);
     }
+
+    public function eventos()
+    {
+        return $this->hasMany(EventoRol::class);
+    }
 }
