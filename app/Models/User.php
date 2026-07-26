@@ -35,4 +35,9 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Iglesia::class);
     }
+
+    public function servidor()
+    {
+        return $this->hasOne(Servidor::class);
+    }
 }

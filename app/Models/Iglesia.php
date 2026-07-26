@@ -21,4 +21,9 @@ class Iglesia extends Model
     {
         return $this->hasMany(Ministerio::class);
     }
+
+    public function servidores()
+    {
+        return $this->hasMany(Servidor::class);
+    }
 }
