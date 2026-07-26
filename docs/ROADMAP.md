@@ -21,10 +21,10 @@
 * [x] Iglesias
 * [x] Ministerios
 * [x] Roles
-* [ ] Servidores
-* [ ] Usuarios
+* [x] Servidores
+* [x] Usuarios
 * [ ] Disponibilidad
-* [ ] Eventos Programados
+* [x] Eventos Programados
 * [ ] Eventos
 * [ ] Asignaciones
 * [ ] Panel de administración

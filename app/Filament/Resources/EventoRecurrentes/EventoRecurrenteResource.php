@@ -6,6 +6,7 @@ use App\Filament\Resources\EventoRecurrentes\Pages\CreateEventoRecurrente;
 use App\Filament\Resources\EventoRecurrentes\Pages\EditEventoRecurrente;
 use App\Filament\Resources\EventoRecurrentes\Pages\ListEventoRecurrentes;
 use App\Filament\Resources\EventoRecurrentes\Pages\ViewEventoRecurrente;
+use App\Filament\Resources\EventoRecurrentes\RelationManagers\RolesRelationManager;
 use App\Filament\Resources\EventoRecurrentes\Schemas\EventoRecurrenteForm;
 use App\Filament\Resources\EventoRecurrentes\Schemas\EventoRecurrenteInfolist;
 use App\Filament\Resources\EventoRecurrentes\Tables\EventoRecurrentesTable;
@@ -42,7 +43,7 @@ class EventoRecurrenteResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            RolesRelationManager::class,
         ];
     }
 
