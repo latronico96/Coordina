@@ -23,7 +23,7 @@
 * [x] Roles
 * [x] Servidores
 * [x] Usuarios
-* [ ] Disponibilidad
+* [x] Disponibilidad
 * [x] Eventos Programados
 * [ ] Eventos
 * [ ] Asignaciones
