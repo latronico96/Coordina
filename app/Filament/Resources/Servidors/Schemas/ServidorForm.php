@@ -28,6 +28,13 @@ class ServidorForm
                 TextInput::make('email')
                     ->email(),
 
+                Select::make('rolesServicio')
+                    ->relationship('rolesServicio', 'nombre')
+                    ->multiple()
+                    ->searchable()
+                    ->preload()
+                    ->label('Roles de servicio'),
+
                 Toggle::make('activo')
                     ->default(true),
             ]);

@@ -1,0 +1,50 @@
+<?php
+
+namespace App\Filament\Resources\Servidors\RelationManagers;
+
+use Filament\Actions\CreateAction;
+use Filament\Actions\EditAction;
+use Filament\Actions\DeleteAction;
+use Filament\Resources\RelationManagers\RelationManager;
+use Filament\Schemas\Schema;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Table;
+use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\TextInput;
+
+class DisponibilidadesRelationManager extends RelationManager
+{
+    protected static string $relationship = 'disponibilidades';
+
+
+    public function form(Schema $schema): Schema
+    {
+        return $schema
+            ->components([
+                DatePicker::make('fecha')
+                    ->required(),
+
+                TextInput::make('motivo')
+                    ->maxLength(255),
+            ]);
+    }
+
+
+    public function table(Table $table): Table
+    {
+        return $table
+            ->columns([
+                TextColumn::make('fecha')
+                    ->date(),
+
+                TextColumn::make('motivo'),
+            ])
+            ->headerActions([
+                CreateAction::make(),
+            ])
+            ->recordActions([
+                EditAction::make(),
+                DeleteAction::make(),
+            ]);
+    }
+}

@@ -25,4 +25,17 @@ class Servidor extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function rolesServicio()
+    {
+        return $this->belongsToMany(
+            RolServicio::class,
+            'rol_servicio_servidor'
+        );
+    }
+
+    public function disponibilidades()
+    {
+        return $this->hasMany(DisponibilidadServidor::class);
+    }
 }

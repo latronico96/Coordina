@@ -16,9 +16,18 @@ class ServidorsTable
     public static function configure(Table $table): Table
     {
         return $table
+            ->modifyQueryUsing(
+                fn($query) =>
+                $query->with(['rolesServicio', 'iglesia'])
+            )
             ->columns([
                 TextColumn::make('nombre')
-                    ->searchable()
+                    ->label("Nombre")
+                    ->formatStateUsing(
+                        fn($state, $record) =>
+                        "{$record->nombre} {$record->apellido}"
+                    )
+                    ->searchable(['nombre', 'apellido'])
                     ->sortable(),
 
                 TextColumn::make('apellido')
@@ -30,6 +39,14 @@ class ServidorsTable
 
                 TextColumn::make('email')
                     ->searchable(),
+                TextColumn::make('rolesServicio.nombre')
+                    ->label('Roles')
+                    ->state(
+                        fn($record) =>
+                        $record->rolesServicio
+                            ->pluck('nombre')
+                            ->implode(', ')
+                    ),
 
                 TextColumn::make('iglesia.nombre')
                     ->label('Iglesia')
@@ -41,8 +58,6 @@ class ServidorsTable
                 TextColumn::make('updated_at')
                     ->label('Actualizado')
                     ->since(),
-
-
             ])
             ->filters([
                 TernaryFilter::make('activo')

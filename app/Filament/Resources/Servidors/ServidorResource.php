@@ -6,6 +6,7 @@ use App\Filament\Resources\Servidors\Pages\CreateServidor;
 use App\Filament\Resources\Servidors\Pages\EditServidor;
 use App\Filament\Resources\Servidors\Pages\ListServidors;
 use App\Filament\Resources\Servidors\Pages\ViewServidor;
+use App\Filament\Resources\Servidors\RelationManagers\DisponibilidadesRelationManager;
 use App\Filament\Resources\Servidors\Schemas\ServidorForm;
 use App\Filament\Resources\Servidors\Schemas\ServidorInfolist;
 use App\Filament\Resources\Servidors\Tables\ServidorsTable;
@@ -42,7 +43,7 @@ class ServidorResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            DisponibilidadesRelationManager::class,
         ];
     }
 
