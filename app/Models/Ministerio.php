@@ -8,9 +8,9 @@ class Ministerio extends Model
 {
     protected $fillable = [
         'iglesia_id',
-        "nombre",
-        "descripcion",
-        "activo"
+        'nombre',
+        'descripcion',
+        'activo',
     ];
 
     public function iglesia()

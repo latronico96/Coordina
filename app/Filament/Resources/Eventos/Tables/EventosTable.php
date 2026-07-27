@@ -33,7 +33,7 @@ class EventosTable
                     ->time(),
                 TextColumn::make('estado')
                     ->badge()
-                    ->color(fn(string $state): string => match ($state) {
+                    ->color(fn (string $state): string => match ($state) {
                         'draft' => 'gray',
                         'confirmado' => 'info',
                         'pendiente' => 'warning',

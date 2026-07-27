@@ -26,7 +26,7 @@ class RolesRelationManager extends RelationManager
                     ->relationship(
                         name: 'rolServicio',
                         titleAttribute: 'nombre',
-                        modifyQueryUsing: fn($query) => $query->orderBy('nombre')
+                        modifyQueryUsing: fn ($query) => $query->orderBy('nombre')
                     )
                     ->preload()
                     ->required(),

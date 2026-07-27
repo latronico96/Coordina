@@ -17,9 +17,9 @@ return new class extends Migration
             $table->foreignId('iglesia_id')
                 ->constrained()
                 ->cascadeOnDelete();
-            $table->string("nombre");
-            $table->string("descripcion")->nullable("");
-            $table->boolean("activo")->default(true);
+            $table->string('nombre');
+            $table->string('descripcion')->nullable('');
+            $table->boolean('activo')->default(true);
         });
     }
 

@@ -22,7 +22,7 @@ class EventoRecurrentesTable
                     ->sortable(),
 
                 TextColumn::make('dia_semana')
-                    ->formatStateUsing(fn($state) => match ($state) {
+                    ->formatStateUsing(fn ($state) => match ($state) {
                         1 => 'Lunes',
                         2 => 'Martes',
                         3 => 'Miércoles',
@@ -38,7 +38,7 @@ class EventoRecurrentesTable
                     ->boolean(),
             ])
             ->filters([
-                TernaryFilter::make('activo')
+                TernaryFilter::make('activo'),
             ])
             ->recordActions([
                 ViewAction::make(),

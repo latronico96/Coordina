@@ -17,15 +17,13 @@ class ServidorsTable
     {
         return $table
             ->modifyQueryUsing(
-                fn($query) =>
-                $query->with(['rolesServicio', 'iglesia'])
+                fn ($query) => $query->with(['rolesServicio', 'iglesia'])
             )
             ->columns([
                 TextColumn::make('nombre')
-                    ->label("Nombre")
+                    ->label('Nombre')
                     ->formatStateUsing(
-                        fn($state, $record) =>
-                        "{$record->nombre} {$record->apellido}"
+                        fn ($state, $record) => "{$record->nombre} {$record->apellido}"
                     )
                     ->searchable(['nombre', 'apellido'])
                     ->sortable(),
@@ -38,8 +36,7 @@ class ServidorsTable
                 TextColumn::make('rolesServicio.nombre')
                     ->label('Roles')
                     ->state(
-                        fn($record) =>
-                        $record->rolesServicio
+                        fn ($record) => $record->rolesServicio
                             ->pluck('nombre')
                             ->implode(', ')
                     ),

@@ -34,8 +34,7 @@ class AsignacionsTable
                 TextColumn::make('servidor.nombre')
                     ->label('Servidor')
                     ->formatStateUsing(
-                        fn ($state, $record) =>
-                        $record->servidor->nombre . ' ' .
+                        fn ($state, $record) => $record->servidor->nombre.' '.
                         $record->servidor->apellido
                     )
                     ->searchable(),

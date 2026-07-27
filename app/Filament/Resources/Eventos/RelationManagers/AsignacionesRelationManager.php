@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Eventos\RelationManagers;
 
+use App\Models\EventoRol;
 use Filament\Actions\CreateAction;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\EditAction;
@@ -27,16 +28,14 @@ class AsignacionesRelationManager extends RelationManager
                             ->rolesRequeridos()
                             ->with('rolServicio')
                             ->get()
-                            ->mapWithKeys(fn($rol) => [
-                                $rol->id =>
-                                $rol->rolServicio->nombre .
-                                    ' (x' . $rol->cantidad . ')'
+                            ->mapWithKeys(fn ($rol) => [
+                                $rol->id => $rol->rolServicio->nombre.
+                                    ' (x'.$rol->cantidad.')',
                             ]);
                     })
                     ->live()
-                    ->afterStateUpdated(fn($set) => $set('servidor_id', null))
+                    ->afterStateUpdated(fn ($set) => $set('servidor_id', null))
                     ->required(),
-
 
                 Select::make('servidor_id')
                     ->label('Servidor')
@@ -47,13 +46,13 @@ class AsignacionesRelationManager extends RelationManager
 
                             $eventoRolId = $get('evento_rol_id');
 
-                            if (!$eventoRolId) {
+                            if (! $eventoRolId) {
                                 return $query;
                             }
 
-                            $eventoRol = \App\Models\EventoRol::find($eventoRolId);
+                            $eventoRol = EventoRol::find($eventoRolId);
 
-                            if (!$eventoRol) {
+                            if (! $eventoRol) {
                                 return $query;
                             }
 
@@ -69,13 +68,11 @@ class AsignacionesRelationManager extends RelationManager
                         }
                     )
                     ->getOptionLabelFromRecordUsing(
-                        fn($record) =>
-                        $record->nombre . ' ' . $record->apellido
+                        fn ($record) => $record->nombre.' '.$record->apellido
                     )
                     ->searchable()
                     ->preload()
                     ->required(),
-
 
                 Select::make('estado')
                     ->options([
@@ -88,14 +85,12 @@ class AsignacionesRelationManager extends RelationManager
             ]);
     }
 
-
     protected function mutateFormDataBeforeCreate(array $data): array
     {
         $data['evento_id'] = $this->ownerRecord->id;
 
         return $data;
     }
-
 
     public function table(Table $table): Table
     {

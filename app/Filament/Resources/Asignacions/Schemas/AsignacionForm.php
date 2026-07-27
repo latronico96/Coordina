@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Asignacions\Schemas;
 
+use App\Models\EventoRol;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Schemas\Schema;
@@ -24,8 +25,7 @@ class AsignacionForm
                     ->searchable()
                     ->preload()
                     ->getOptionLabelFromRecordUsing(
-                        fn($record) =>
-                        $record->rolServicio->nombre . ' (x' . $record->cantidad . ')'
+                        fn ($record) => $record->rolServicio->nombre.' (x'.$record->cantidad.')'
                     )
                     ->required(),
 
@@ -37,13 +37,13 @@ class AsignacionForm
 
                             $eventoRolId = $get('evento_rol_id');
 
-                            if (!$eventoRolId) {
+                            if (! $eventoRolId) {
                                 return $query;
                             }
 
-                            $eventoRol = \App\Models\EventoRol::find($eventoRolId);
+                            $eventoRol = EventoRol::find($eventoRolId);
 
-                            if (!$eventoRol) {
+                            if (! $eventoRol) {
                                 return $query;
                             }
 
@@ -59,8 +59,7 @@ class AsignacionForm
                         }
                     )
                     ->getOptionLabelFromRecordUsing(
-                        fn($record) =>
-                        $record->nombre . ' ' . $record->apellido
+                        fn ($record) => $record->nombre.' '.$record->apellido
                     )
                     ->searchable()
                     ->preload()

@@ -15,23 +15,19 @@ class Evento extends Model
         'estado',
     ];
 
-
     protected $casts = [
         'fecha' => 'date',
     ];
-
 
     public function iglesia()
     {
         return $this->belongsTo(Iglesia::class);
     }
 
-
     public function eventoRecurrente()
     {
         return $this->belongsTo(EventoRecurrente::class);
     }
-
 
     public function rolesRequeridos()
     {

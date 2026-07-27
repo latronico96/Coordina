@@ -19,7 +19,7 @@ class EventoRecurrenteInfolist
                 TextEntry::make('nombre'),
 
                 TextEntry::make('dia_semana')
-                    ->formatStateUsing(fn($state) => match ($state) {
+                    ->formatStateUsing(fn ($state) => match ($state) {
                         1 => 'Lunes',
                         2 => 'Martes',
                         3 => 'Miércoles',
