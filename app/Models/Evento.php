@@ -37,4 +37,9 @@ class Evento extends Model
     {
         return $this->hasMany(EventoRol::class);
     }
+
+    public function asignaciones()
+    {
+        return $this->hasMany(Asignacion::class);
+    }
 }

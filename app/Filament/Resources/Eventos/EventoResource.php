@@ -2,11 +2,12 @@
 
 namespace App\Filament\Resources\Eventos;
 
-use App\Filament\Resources\Evento\RelationManagers\RolesRelationManager;
 use App\Filament\Resources\Eventos\Pages\CreateEvento;
 use App\Filament\Resources\Eventos\Pages\EditEvento;
 use App\Filament\Resources\Eventos\Pages\ListEventos;
 use App\Filament\Resources\Eventos\Pages\ViewEvento;
+use App\Filament\Resources\Eventos\RelationManagers\AsignacionesRelationManager;
+use App\Filament\Resources\Eventos\RelationManagers\RolesRelationManager;
 use App\Filament\Resources\Eventos\Schemas\EventoForm;
 use App\Filament\Resources\Eventos\Schemas\EventoInfolist;
 use App\Filament\Resources\Eventos\Tables\EventosTable;
@@ -44,6 +45,7 @@ class EventoResource extends Resource
     {
         return [
             RolesRelationManager::class,
+            AsignacionesRelationManager::class,
         ];
     }
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Resources\Evento\RelationManagers;
+namespace App\Filament\Resources\Eventos\RelationManagers;
 
 use Filament\Actions\CreateAction;
 use Filament\Actions\DeleteAction;

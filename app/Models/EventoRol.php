@@ -7,12 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 class EventoRol extends Model
 {
     protected $fillable = [
-        'evento_recurrente_id',
+        'evento_id',
         'rol_servicio_id',
         'cantidad',
     ];
 
-    public function eventoRecurrente()
+    public function evento()
     {
         return $this->belongsTo(Evento::class);
     }
@@ -20,5 +20,10 @@ class EventoRol extends Model
     public function rolServicio()
     {
         return $this->belongsTo(RolServicio::class);
+    }
+
+    public function asignaciones()
+    {
+        return $this->hasMany(Asignacion::class);
     }
 }

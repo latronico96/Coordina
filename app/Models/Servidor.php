@@ -38,4 +38,9 @@ class Servidor extends Model
     {
         return $this->hasMany(DisponibilidadServidor::class);
     }
+
+    public function asignaciones()
+    {
+        return $this->hasMany(Asignacion::class);
+    }
 }
