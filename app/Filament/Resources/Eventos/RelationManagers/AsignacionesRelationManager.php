@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Eventos\RelationManagers;
 
+use App\Models\Evento;
 use App\Models\EventoRol;
 use Filament\Actions\CreateAction;
 use Filament\Actions\DeleteAction;
@@ -13,7 +14,7 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 
 /**
- * @property \App\Models\Evento $ownerRecord
+ * @property Evento $ownerRecord
  */
 class AsignacionesRelationManager extends RelationManager
 {
