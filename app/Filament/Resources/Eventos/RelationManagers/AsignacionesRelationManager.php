@@ -12,6 +12,9 @@ use Filament\Schemas\Schema;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 
+/**
+ * @property \App\Models\Evento $ownerRecord
+ */
 class AsignacionesRelationManager extends RelationManager
 {
     protected static string $relationship = 'asignaciones';
