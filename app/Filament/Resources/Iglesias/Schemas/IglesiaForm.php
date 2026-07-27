@@ -16,6 +16,7 @@ class IglesiaForm
                     ->required(),
                 TextInput::make('direccion'),
                 Toggle::make('activo')
+                    ->default(true)
                     ->required(),
             ]);
     }

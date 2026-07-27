@@ -21,9 +21,6 @@ class EventoRecurrentesTable
                     ->searchable()
                     ->sortable(),
 
-                TextColumn::make('iglesia.nombre')
-                    ->label('Iglesia'),
-
                 TextColumn::make('dia_semana')
                     ->formatStateUsing(fn($state) => match ($state) {
                         1 => 'Lunes',

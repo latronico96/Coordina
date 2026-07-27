@@ -30,10 +30,6 @@ class ServidorsTable
                     ->searchable(['nombre', 'apellido'])
                     ->sortable(),
 
-                TextColumn::make('apellido')
-                    ->searchable()
-                    ->sortable(),
-
                 TextColumn::make('telefono')
                     ->searchable(),
 
@@ -47,10 +43,6 @@ class ServidorsTable
                             ->pluck('nombre')
                             ->implode(', ')
                     ),
-
-                TextColumn::make('iglesia.nombre')
-                    ->label('Iglesia')
-                    ->sortable(),
 
                 IconColumn::make('activo')
                     ->boolean(),

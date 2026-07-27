@@ -23,6 +23,7 @@ class RolServicioForm
                     ->numeric()
                     ->default(0),
                 Toggle::make('activo')
+                    ->default(true)
                     ->required(),
             ]);
     }

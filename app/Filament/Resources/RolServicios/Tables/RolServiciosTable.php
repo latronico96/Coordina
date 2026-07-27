@@ -24,15 +24,13 @@ class RolServiciosTable
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-                TextColumn::make('ministerio_id')
-                    ->numeric()
-                    ->sortable(),
                 TextColumn::make('ministerio.nombre')
                     ->label('Ministerio'),
                 TextColumn::make('nombre')
                     ->searchable(),
                 TextColumn::make('minutos_preparacion')
                     ->numeric()
+                    ->alignEnd()
                     ->sortable(),
                 IconColumn::make('activo')
                     ->boolean(),

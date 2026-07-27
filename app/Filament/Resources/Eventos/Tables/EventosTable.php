@@ -21,10 +21,6 @@ class EventosTable
                     ->searchable()
                     ->sortable(),
 
-                TextColumn::make('iglesia.nombre')
-                    ->label('Iglesia')
-                    ->sortable(),
-
                 TextColumn::make('eventoRecurrente.nombre')
                     ->label('Plantilla')
                     ->placeholder('-'),
