@@ -31,4 +31,9 @@ class Iglesia extends Model
     {
         return $this->hasMany(EventoRecurrente::class);
     }
+
+    public function eventos()
+    {
+        return $this->hasMany(Evento::class);
+    }
 }

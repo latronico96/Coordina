@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('evento_rols', function (Blueprint $table) {
+        Schema::create('evento_recurrente_rols', function (Blueprint $table) {
 
             $table->id();
 
@@ -35,6 +35,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('evento_rols');
+        Schema::dropIfExists('evento_recurrente_rols');
     }
 };

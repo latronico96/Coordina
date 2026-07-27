@@ -18,6 +18,11 @@ class RolServicio extends Model
         return $this->belongsTo(Ministerio::class);
     }
 
+    public function eventosRecurrentes()
+    {
+        return $this->hasMany(EventoRecurrenteRol::class);
+    }
+
     public function eventos()
     {
         return $this->hasMany(EventoRol::class);

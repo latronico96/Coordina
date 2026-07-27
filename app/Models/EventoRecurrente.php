@@ -19,8 +19,13 @@ class EventoRecurrente extends Model
         return $this->belongsTo(Iglesia::class);
     }
 
-    public function roles()
+    public function rolesRequeridos()
     {
-        return $this->hasMany(EventoRol::class);
+        return $this->hasMany(EventoRecurrenteRol::class);
+    }
+
+    public function eventos()
+    {
+        return $this->hasMany(Evento::class);
     }
 }

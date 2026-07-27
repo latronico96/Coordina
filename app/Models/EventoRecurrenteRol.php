@@ -4,8 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class EventoRol extends Model
+class EventoRecurrenteRol extends Model
 {
+    protected $table = 'evento_recurrente_rols';
+
     protected $fillable = [
         'evento_recurrente_id',
         'rol_servicio_id',
@@ -14,7 +16,7 @@ class EventoRol extends Model
 
     public function eventoRecurrente()
     {
-        return $this->belongsTo(Evento::class);
+        return $this->belongsTo(EventoRecurrente::class);
     }
 
     public function rolServicio()
