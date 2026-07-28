@@ -63,4 +63,19 @@ class EventoRecurrente extends Model
     {
         return $this->hasMany(Evento::class);
     }
+
+    public function proximaFecha(): Carbon
+    {
+        $desde = Carbon::today();
+
+        return match ($this->dia_semana) {
+            1 => $desde->copy()->next(Carbon::MONDAY),
+            2 => $desde->copy()->next(Carbon::TUESDAY),
+            3 => $desde->copy()->next(Carbon::WEDNESDAY),
+            4 => $desde->copy()->next(Carbon::THURSDAY),
+            5 => $desde->copy()->next(Carbon::FRIDAY),
+            6 => $desde->copy()->next(Carbon::SATURDAY),
+            7 => $desde->copy()->next(Carbon::SUNDAY),
+        };
+    }
 }
