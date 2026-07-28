@@ -10,12 +10,15 @@ class AdminSeeder extends Seeder
 {
     public function run(): void
     {
-        User::firstOrCreate(
+        $user = User::firstOrCreate(
             ['email' => 'admin@coordina.local'],
             [
                 'name' => 'admin',
                 'password' => Hash::make('12345678'),
+                'email_verified_at' => now(),
+
             ]
         );
+        $user->assignRole('super-admin');
     }
 }

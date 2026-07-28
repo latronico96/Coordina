@@ -37,6 +37,8 @@ use Spatie\Permission\Traits\HasRoles;
  * @property-read Servidor|null $servidor
  * @property-read Collection<int, Permission> $teams
  * @property-read int|null $teams_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Role> $roles
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Permission> $permissions
  *
  * @method static \Database\Factories\UserFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User newModelQuery()
@@ -60,7 +62,7 @@ use Spatie\Permission\Traits\HasRoles;
  *
  * @mixin \Eloquent
  */
-#[Fillable(['name', 'email', 'password'])]
+#[Fillable(['name', 'email', 'password', 'iglesia_id'])]
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable
 {
