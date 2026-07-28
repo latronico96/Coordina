@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Carbon;
 
 /**
  * @property int $id
@@ -12,11 +13,12 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $servidor_id
  * @property string $estado
  * @property string|null $observaciones
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \App\Models\Evento $evento
- * @property-read \App\Models\EventoRol $eventoRol
- * @property-read \App\Models\Servidor $servidor
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property-read Evento $evento
+ * @property-read EventoRol $eventoRol
+ * @property-read Servidor $servidor
+ *
  * @method static \Database\Factories\AsignacionFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Asignacion newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Asignacion newQuery()
@@ -29,6 +31,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Asignacion whereObservaciones($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Asignacion whereServidorId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Asignacion whereUpdatedAt($value)
+ *
  * @mixin \Eloquent
  */
 class Asignacion extends Model

@@ -2,24 +2,27 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Carbon;
 
 /**
  * @property int $id
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
  * @property int $ministerio_id
  * @property string $nombre
  * @property int $minutos_preparacion
  * @property int $activo
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\EventoRol> $eventos
+ * @property-read Collection<int, EventoRol> $eventos
  * @property-read int|null $eventos_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\EventoRecurrenteRol> $eventosRecurrentes
+ * @property-read Collection<int, EventoRecurrenteRol> $eventosRecurrentes
  * @property-read int|null $eventos_recurrentes_count
- * @property-read \App\Models\Ministerio $ministerio
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Servidor> $servidores
+ * @property-read Ministerio $ministerio
+ * @property-read Collection<int, Servidor> $servidores
  * @property-read int|null $servidores_count
+ *
  * @method static \Database\Factories\RolServicioFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder<static>|RolServicio newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|RolServicio newQuery()
@@ -31,6 +34,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|RolServicio whereMinutosPreparacion($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|RolServicio whereNombre($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|RolServicio whereUpdatedAt($value)
+ *
  * @mixin \Eloquent
  */
 class RolServicio extends Model

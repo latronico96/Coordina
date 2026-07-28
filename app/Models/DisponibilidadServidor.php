@@ -4,15 +4,17 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Carbon;
 
 /**
  * @property int $id
  * @property int $servidor_id
  * @property string $fecha
  * @property string|null $motivo
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \App\Models\Servidor $servidor
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property-read Servidor $servidor
+ *
  * @method static \Database\Factories\DisponibilidadServidorFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder<static>|DisponibilidadServidor newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|DisponibilidadServidor newQuery()
@@ -23,6 +25,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|DisponibilidadServidor whereMotivo($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|DisponibilidadServidor whereServidorId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|DisponibilidadServidor whereUpdatedAt($value)
+ *
  * @mixin \Eloquent
  */
 class DisponibilidadServidor extends Model

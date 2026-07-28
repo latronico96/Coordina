@@ -4,16 +4,18 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Carbon;
 
 /**
  * @property int $id
  * @property int $evento_recurrente_id
  * @property int $rol_servicio_id
  * @property int $cantidad
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \App\Models\EventoRecurrente $eventoRecurrente
- * @property-read \App\Models\RolServicio $rolServicio
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property-read EventoRecurrente $eventoRecurrente
+ * @property-read RolServicio $rolServicio
+ *
  * @method static \Database\Factories\EventoRecurrenteRolFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder<static>|EventoRecurrenteRol newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|EventoRecurrenteRol newQuery()
@@ -24,6 +26,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|EventoRecurrenteRol whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|EventoRecurrenteRol whereRolServicioId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|EventoRecurrenteRol whereUpdatedAt($value)
+ *
  * @mixin \Eloquent
  */
 class EventoRecurrenteRol extends Model

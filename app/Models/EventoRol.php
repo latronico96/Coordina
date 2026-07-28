@@ -2,20 +2,23 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Carbon;
 
 /**
  * @property int $id
  * @property int $evento_id
  * @property int $rol_servicio_id
  * @property int $cantidad
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Asignacion> $asignaciones
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property-read Collection<int, Asignacion> $asignaciones
  * @property-read int|null $asignaciones_count
- * @property-read \App\Models\Evento $evento
- * @property-read \App\Models\RolServicio $rolServicio
+ * @property-read Evento $evento
+ * @property-read RolServicio $rolServicio
+ *
  * @method static \Database\Factories\EventoRolFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder<static>|EventoRol newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|EventoRol newQuery()
@@ -26,6 +29,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|EventoRol whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|EventoRol whereRolServicioId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|EventoRol whereUpdatedAt($value)
+ *
  * @mixin \Eloquent
  */
 class EventoRol extends Model

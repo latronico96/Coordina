@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Carbon;
 
 /**
  * @property int $id
@@ -14,16 +16,17 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null $telefono
  * @property string|null $email
  * @property int $activo
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Asignacion> $asignaciones
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property-read Collection<int, Asignacion> $asignaciones
  * @property-read int|null $asignaciones_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\DisponibilidadServidor> $disponibilidades
+ * @property-read Collection<int, DisponibilidadServidor> $disponibilidades
  * @property-read int|null $disponibilidades_count
- * @property-read \App\Models\Iglesia $iglesia
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\RolServicio> $rolesServicio
+ * @property-read Iglesia $iglesia
+ * @property-read Collection<int, RolServicio> $rolesServicio
  * @property-read int|null $roles_servicio_count
- * @property-read \App\Models\User|null $user
+ * @property-read User|null $user
+ *
  * @method static \Database\Factories\ServidorFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Servidor newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Servidor newQuery()
@@ -38,6 +41,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Servidor whereTelefono($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Servidor whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Servidor whereUserId($value)
+ *
  * @mixin \Eloquent
  */
 class Servidor extends Model

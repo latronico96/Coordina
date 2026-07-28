@@ -2,25 +2,28 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Carbon;
 
 /**
  * @property int $id
  * @property int $iglesia_id
  * @property int|null $evento_recurrente_id
  * @property string $nombre
- * @property \Illuminate\Support\Carbon $fecha
+ * @property Carbon $fecha
  * @property string $hora_inicio
  * @property string $estado
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Asignacion> $asignaciones
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property-read Collection<int, Asignacion> $asignaciones
  * @property-read int|null $asignaciones_count
- * @property-read \App\Models\EventoRecurrente|null $eventoRecurrente
- * @property-read \App\Models\Iglesia $iglesia
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\EventoRol> $rolesRequeridos
+ * @property-read EventoRecurrente|null $eventoRecurrente
+ * @property-read Iglesia $iglesia
+ * @property-read Collection<int, EventoRol> $rolesRequeridos
  * @property-read int|null $roles_requeridos_count
+ *
  * @method static \Database\Factories\EventoFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Evento newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Evento newQuery()
@@ -34,6 +37,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Evento whereIglesiaId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Evento whereNombre($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Evento whereUpdatedAt($value)
+ *
  * @mixin \Eloquent
  */
 class Evento extends Model
