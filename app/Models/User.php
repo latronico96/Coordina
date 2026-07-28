@@ -37,8 +37,8 @@ use Spatie\Permission\Traits\HasRoles;
  * @property-read Servidor|null $servidor
  * @property-read Collection<int, Permission> $teams
  * @property-read int|null $teams_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, Role> $roles
- * @property-read \Illuminate\Database\Eloquent\Collection<int, Permission> $permissions
+ * @property-read Collection<int, Role> $roles
+ * @property-read Collection<int, Permission> $permissions
  *
  * @method static \Database\Factories\UserFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User newModelQuery()
