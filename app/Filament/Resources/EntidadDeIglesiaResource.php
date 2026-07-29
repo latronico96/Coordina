@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Models\User;
 use Filament\Resources\Resource;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Auth;
 
 abstract class EntidadDeIglesiaResource extends Resource
 {
@@ -12,7 +13,8 @@ abstract class EntidadDeIglesiaResource extends Resource
     {
         $query = parent::getEloquentQuery();
 
-        $user = auth()->user();
+        /** @var User|null $user */
+        $user = Auth::user();
 
         if (! $user) {
             return $query->whereRaw('1 = 0');

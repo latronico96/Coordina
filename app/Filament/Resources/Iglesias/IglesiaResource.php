@@ -10,11 +10,13 @@ use App\Filament\Resources\Iglesias\Schemas\IglesiaForm;
 use App\Filament\Resources\Iglesias\Schemas\IglesiaInfolist;
 use App\Filament\Resources\Iglesias\Tables\IglesiasTable;
 use App\Models\Iglesia;
+use App\Models\User;
 use BackedEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
+use Illuminate\Support\Facades\Auth;
 use UnitEnum;
 
 class IglesiaResource extends Resource
@@ -61,5 +63,13 @@ class IglesiaResource extends Resource
             'view' => ViewIglesia::route('/{record}'),
             'edit' => EditIglesia::route('/{record}/edit'),
         ];
+    }
+
+    public static function canViewAny(): bool
+    {
+        /** @var User|null $user */
+        $user = Auth::user();
+
+        return $user?->hasRole('super-admin');
     }
 }

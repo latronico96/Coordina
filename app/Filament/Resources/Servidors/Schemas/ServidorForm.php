@@ -2,21 +2,23 @@
 
 namespace App\Filament\Resources\Servidors\Schemas;
 
+use App\Models\User;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Schema;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Auth;
 
 class ServidorForm
 {
     public static function configure(Schema $schema): Schema
     {
+        /** @var User|null $user */
+        $user = Auth::user();
+
         return $schema
             ->components([
-                Select::make('iglesia_id')
-                    ->relationship('iglesia', 'nombre')
-                    ->required(),
-
                 TextInput::make('nombre')
                     ->required(),
 
@@ -30,6 +32,19 @@ class ServidorForm
 
                 Select::make('rolesServicio')
                     ->relationship('rolesServicio', 'nombre')
+                    ->relationship(
+                        'rolesServicio',
+                        'nombre',
+                        modifyQueryUsing: fn ($query) => $query
+                            ->orderBy('nombre')
+                            ->whereHas(
+                                'ministerio',
+                                fn (Builder $q) => $q->where(
+                                    'iglesia_id',
+                                    $user->iglesia_id,
+                                ),
+                            )
+                    )
                     ->multiple()
                     ->searchable()
                     ->preload()

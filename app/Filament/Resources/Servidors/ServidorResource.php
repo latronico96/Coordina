@@ -12,10 +12,12 @@ use App\Filament\Resources\Servidors\Schemas\ServidorForm;
 use App\Filament\Resources\Servidors\Schemas\ServidorInfolist;
 use App\Filament\Resources\Servidors\Tables\ServidorsTable;
 use App\Models\Servidor;
+use App\Models\User;
 use BackedEnum;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
+use Illuminate\Support\Facades\Auth;
 use UnitEnum;
 
 class ServidorResource extends EntidadDeIglesiaResource
@@ -62,5 +64,17 @@ class ServidorResource extends EntidadDeIglesiaResource
             'view' => ViewServidor::route('/{record}'),
             'edit' => EditServidor::route('/{record}/edit'),
         ];
+    }
+
+    public static function canViewAny(): bool
+    {
+        /** @var User|null $user */
+        $user = Auth::user();
+
+        return $user?->hasAnyRole([
+            'admin-iglesia',
+            'coordinador',
+            'lider-ministerio',
+        ]);
     }
 }

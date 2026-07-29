@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\EventoRecurrentes;
 
+use App\Filament\Resources\EntidadDeIglesiaResource;
 use App\Filament\Resources\EventoRecurrentes\Pages\CreateEventoRecurrente;
 use App\Filament\Resources\EventoRecurrentes\Pages\EditEventoRecurrente;
 use App\Filament\Resources\EventoRecurrentes\Pages\ListEventoRecurrentes;
@@ -11,14 +12,15 @@ use App\Filament\Resources\EventoRecurrentes\Schemas\EventoRecurrenteForm;
 use App\Filament\Resources\EventoRecurrentes\Schemas\EventoRecurrenteInfolist;
 use App\Filament\Resources\EventoRecurrentes\Tables\EventoRecurrentesTable;
 use App\Models\EventoRecurrente;
+use App\Models\User;
 use BackedEnum;
-use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
+use Illuminate\Support\Facades\Auth;
 use UnitEnum;
 
-class EventoRecurrenteResource extends Resource
+class EventoRecurrenteResource extends EntidadDeIglesiaResource
 {
     protected static ?string $model = EventoRecurrente::class;
 
@@ -62,5 +64,17 @@ class EventoRecurrenteResource extends Resource
             'view' => ViewEventoRecurrente::route('/{record}'),
             'edit' => EditEventoRecurrente::route('/{record}/edit'),
         ];
+    }
+
+    public static function canViewAny(): bool
+    {
+        /** @var User|null $user */
+        $user = Auth::user();
+
+        return $user?->hasAnyRole([
+            'admin-iglesia',
+            'coordinador',
+            'lider-ministerio',
+        ]);
     }
 }

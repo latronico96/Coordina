@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Invitacions;
 
+use App\Filament\Resources\EntidadDeIglesiaResource;
 use App\Filament\Resources\Invitacions\Pages\CreateInvitacion;
 use App\Filament\Resources\Invitacions\Pages\EditInvitacion;
 use App\Filament\Resources\Invitacions\Pages\ListInvitacions;
@@ -10,14 +11,15 @@ use App\Filament\Resources\Invitacions\Schemas\InvitacionForm;
 use App\Filament\Resources\Invitacions\Schemas\InvitacionInfolist;
 use App\Filament\Resources\Invitacions\Tables\InvitacionsTable;
 use App\Models\Invitacion;
+use App\Models\User;
 use BackedEnum;
-use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
+use Illuminate\Support\Facades\Auth;
 use UnitEnum;
 
-class InvitacionResource extends Resource
+class InvitacionResource extends EntidadDeIglesiaResource
 {
     protected static ?string $model = Invitacion::class;
 
@@ -31,9 +33,9 @@ class InvitacionResource extends Resource
 
     protected static ?string $modelLabel = 'Invitación';
 
-    protected static ?int $navigationSort = 1;
+    protected static ?int $navigationSort = 2;
 
-    protected static string|UnitEnum|null $navigationGroup = 'Administración';
+    protected static string|UnitEnum|null $navigationGroup = 'Servidores';
 
     public static function form(Schema $schema): Schema
     {
@@ -65,5 +67,16 @@ class InvitacionResource extends Resource
             'view' => ViewInvitacion::route('/{record}'),
             'edit' => EditInvitacion::route('/{record}/edit'),
         ];
+    }
+
+    public static function canViewAny(): bool
+    {
+        /** @var User|null $user */
+        $user = Auth::user();
+
+        return $user?->hasAnyRole([
+            'admin-iglesia',
+            'coordinador',
+        ]);
     }
 }

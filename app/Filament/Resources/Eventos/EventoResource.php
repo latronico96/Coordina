@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Eventos;
 
+use App\Filament\Resources\EntidadDeIglesiaResource;
 use App\Filament\Resources\Eventos\Pages\CreateEvento;
 use App\Filament\Resources\Eventos\Pages\EditEvento;
 use App\Filament\Resources\Eventos\Pages\ListEventos;
@@ -12,14 +13,15 @@ use App\Filament\Resources\Eventos\Schemas\EventoForm;
 use App\Filament\Resources\Eventos\Schemas\EventoInfolist;
 use App\Filament\Resources\Eventos\Tables\EventosTable;
 use App\Models\Evento;
+use App\Models\User;
 use BackedEnum;
-use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
+use Illuminate\Support\Facades\Auth;
 use UnitEnum;
 
-class EventoResource extends Resource
+class EventoResource extends EntidadDeIglesiaResource
 {
     protected static string|UnitEnum|null $navigationGroup = 'Eventos';
 
@@ -64,5 +66,17 @@ class EventoResource extends Resource
             'view' => ViewEvento::route('/{record}'),
             'edit' => EditEvento::route('/{record}/edit'),
         ];
+    }
+
+    public static function canViewAny(): bool
+    {
+        /** @var User|null $user */
+        $user = Auth::user();
+
+        return $user?->hasAnyRole([
+            'admin-iglesia',
+            'coordinador',
+            'lider-ministerio',
+        ]);
     }
 }

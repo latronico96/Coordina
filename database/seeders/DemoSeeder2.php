@@ -107,6 +107,7 @@ class DemoSeeder2 extends Seeder
             ->create([
                 'name' => "Admin {$nombre}",
                 'email' => "admin{$iglesia->id}@coordina.test",
+                'password' => '12345678',
             ]);
 
         $admin->assignRole('admin-iglesia');

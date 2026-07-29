@@ -17,6 +17,7 @@ use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Auth;
 use UnitEnum;
 
 class AsignacionResource extends EntidadDeIglesiaResource
@@ -76,5 +77,17 @@ class AsignacionResource extends EntidadDeIglesiaResource
             'view' => ViewAsignacion::route('/{record}'),
             'edit' => EditAsignacion::route('/{record}/edit'),
         ];
+    }
+
+    public static function canViewAny(): bool
+    {
+        /** @var User|null $user */
+        $user = Auth::user();
+
+        return $user?->hasAnyRole([
+            'admin-iglesia',
+            'coordinador',
+            'lider-ministerio',
+        ]);
     }
 }

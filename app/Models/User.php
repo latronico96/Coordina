@@ -101,4 +101,13 @@ class User extends Authenticatable
     {
         return $this->hasMany(Invitacion::class);
     }
+
+    public function canAccessFilament(): bool
+    {
+        return $this->hasAnyRole([
+            'super-admin',
+            'admin-iglesia',
+            'lider-ministerio',
+        ]);
+    }
 }

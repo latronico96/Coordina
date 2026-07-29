@@ -14,11 +14,6 @@ class EventoRecurrenteForm
     {
         return $schema
             ->components([
-
-                Select::make('iglesia_id')
-                    ->relationship('iglesia', 'nombre')
-                    ->required(),
-
                 TextInput::make('nombre')
                     ->required(),
 

@@ -11,10 +11,13 @@ use App\Filament\Resources\RolServicios\Schemas\RolServicioForm;
 use App\Filament\Resources\RolServicios\Schemas\RolServicioInfolist;
 use App\Filament\Resources\RolServicios\Tables\RolServiciosTable;
 use App\Models\RolServicio;
+use App\Models\User;
 use BackedEnum;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Auth;
 use UnitEnum;
 
 class RolServicioResource extends EntidadDeIglesiaResource
@@ -61,5 +64,30 @@ class RolServicioResource extends EntidadDeIglesiaResource
             'view' => ViewRolServicio::route('/{record}'),
             'edit' => EditRolServicio::route('/{record}/edit'),
         ];
+    }
+
+    public static function canViewAny(): bool
+    {
+        /** @var User|null $user */
+        $user = Auth::user();
+
+        return $user?->hasAnyRole([
+            'admin-iglesia',
+            'coordinador',
+            'lider-ministerio',
+        ]);
+    }
+
+    protected static function aplicarFiltroIglesia(
+        Builder $query,
+        User $user,
+    ): Builder {
+        return $query->whereHas(
+            'ministerio',
+            fn (Builder $q) => $q->where(
+                'iglesia_id',
+                $user->iglesia_id,
+            ),
+        );
     }
 }

@@ -11,10 +11,12 @@ use App\Filament\Resources\Ministerios\Schemas\MinisterioForm;
 use App\Filament\Resources\Ministerios\Schemas\MinisterioInfolist;
 use App\Filament\Resources\Ministerios\Tables\MinisteriosTable;
 use App\Models\Ministerio;
+use App\Models\User;
 use BackedEnum;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
+use Illuminate\Support\Facades\Auth;
 use UnitEnum;
 
 class MinisterioResource extends EntidadDeIglesiaResource
@@ -61,5 +63,17 @@ class MinisterioResource extends EntidadDeIglesiaResource
             'view' => ViewMinisterio::route('/{record}'),
             'edit' => EditMinisterio::route('/{record}/edit'),
         ];
+    }
+
+    public static function canViewAny(): bool
+    {
+        /** @var User|null $user */
+        $user = Auth::user();
+
+        return $user?->hasAnyRole([
+            'admin-iglesia',
+            'coordinador',
+            'lider-ministerio',
+        ]);
     }
 }
