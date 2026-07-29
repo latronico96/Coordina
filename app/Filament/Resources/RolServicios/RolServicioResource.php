@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\RolServicios;
 
+use App\Filament\Resources\EntidadDeIglesiaResource;
 use App\Filament\Resources\RolServicios\Pages\CreateRolServicio;
 use App\Filament\Resources\RolServicios\Pages\EditRolServicio;
 use App\Filament\Resources\RolServicios\Pages\ListRolServicios;
@@ -11,14 +12,20 @@ use App\Filament\Resources\RolServicios\Schemas\RolServicioInfolist;
 use App\Filament\Resources\RolServicios\Tables\RolServiciosTable;
 use App\Models\RolServicio;
 use BackedEnum;
-use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
+use UnitEnum;
 
-class RolServicioResource extends Resource
+class RolServicioResource extends EntidadDeIglesiaResource
 {
     protected static ?string $model = RolServicio::class;
+
+    protected static string|UnitEnum|null $navigationGroup = 'Ministerios';
+
+    protected static ?int $navigationSort = 3;
+
+    protected static ?string $navigationLabel = 'Roles de Servicio';
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 

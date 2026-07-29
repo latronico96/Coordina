@@ -17,9 +17,16 @@ use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
+use UnitEnum;
 
 class EventoResource extends Resource
 {
+    protected static string|UnitEnum|null $navigationGroup = 'Eventos';
+
+    protected static ?int $navigationSort = 4;
+
+    protected static ?string $navigationLabel = 'Eventos';
+
     protected static ?string $model = Evento::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;

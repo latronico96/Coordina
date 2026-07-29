@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Servidors;
 
+use App\Filament\Resources\EntidadDeIglesiaResource;
 use App\Filament\Resources\Servidors\Pages\CreateServidor;
 use App\Filament\Resources\Servidors\Pages\EditServidor;
 use App\Filament\Resources\Servidors\Pages\ListServidors;
@@ -12,14 +13,20 @@ use App\Filament\Resources\Servidors\Schemas\ServidorInfolist;
 use App\Filament\Resources\Servidors\Tables\ServidorsTable;
 use App\Models\Servidor;
 use BackedEnum;
-use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
+use UnitEnum;
 
-class ServidorResource extends Resource
+class ServidorResource extends EntidadDeIglesiaResource
 {
     protected static ?string $model = Servidor::class;
+
+    protected static string|UnitEnum|null $navigationGroup = 'Servidores';
+
+    protected static ?int $navigationSort = 2;
+
+    protected static ?string $navigationLabel = 'Servidores';
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 

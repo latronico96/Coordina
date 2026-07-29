@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Ministerios;
 
+use App\Filament\Resources\EntidadDeIglesiaResource;
 use App\Filament\Resources\Ministerios\Pages\CreateMinisterio;
 use App\Filament\Resources\Ministerios\Pages\EditMinisterio;
 use App\Filament\Resources\Ministerios\Pages\ListMinisterios;
@@ -11,14 +12,20 @@ use App\Filament\Resources\Ministerios\Schemas\MinisterioInfolist;
 use App\Filament\Resources\Ministerios\Tables\MinisteriosTable;
 use App\Models\Ministerio;
 use BackedEnum;
-use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
+use UnitEnum;
 
-class MinisterioResource extends Resource
+class MinisterioResource extends EntidadDeIglesiaResource
 {
     protected static ?string $model = Ministerio::class;
+
+    protected static string|UnitEnum|null $navigationGroup = 'Ministerios';
+
+    protected static ?int $navigationSort = 3;
+
+    protected static ?string $navigationLabel = 'Ministerios';
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 

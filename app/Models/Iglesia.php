@@ -72,4 +72,9 @@ class Iglesia extends Model
     {
         return $this->hasMany(Evento::class);
     }
+
+    public function invitaciones()
+    {
+        return $this->hasMany(Invitacion::class);
+    }
 }
