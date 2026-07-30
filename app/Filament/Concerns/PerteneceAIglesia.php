@@ -2,7 +2,10 @@
 
 namespace App\Filament\Concerns;
 
+use App\Enums\RolUsuario;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Auth;
 
 trait PerteneceAIglesia
 {
@@ -10,13 +13,14 @@ trait PerteneceAIglesia
     {
         $query = parent::getEloquentQuery();
 
-        $user = auth()->user();
+        /** @var User|null $user */
+        $user = Auth::user();
 
         if (! $user) {
             return $query->whereRaw('1 = 0');
         }
 
-        if ($user->hasRole('super-admin')) {
+        if ($user->hasRole(RolUsuario::SUPER_ADMIN)) {
             return $query;
         }
 

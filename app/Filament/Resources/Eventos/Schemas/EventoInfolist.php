@@ -26,7 +26,8 @@ class EventoInfolist
                 TextEntry::make('hora_inicio')
                     ->time(),
 
-                TextEntry::make('estado'),
+                TextEntry::make('estado')
+                    ->badge(),
 
                 TextEntry::make('created_at')
                     ->dateTime()

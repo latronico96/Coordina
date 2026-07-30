@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Iglesias;
 
+use App\Enums\RolUsuario;
 use App\Filament\Resources\Iglesias\Pages\CreateIglesia;
 use App\Filament\Resources\Iglesias\Pages\EditIglesia;
 use App\Filament\Resources\Iglesias\Pages\ListIglesias;
@@ -70,6 +71,6 @@ class IglesiaResource extends Resource
         /** @var User|null $user */
         $user = Auth::user();
 
-        return $user?->hasRole('super-admin');
+        return $user?->hasRole(RolUsuario::SUPER_ADMIN);
     }
 }

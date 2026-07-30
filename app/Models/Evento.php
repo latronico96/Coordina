@@ -2,10 +2,12 @@
 
 namespace App\Models;
 
+use App\Enums\EstadoEvento;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Auth;
 
 /**
  * @property int $id
@@ -14,7 +16,7 @@ use Illuminate\Support\Carbon;
  * @property string $nombre
  * @property Carbon $fecha
  * @property string $hora_inicio
- * @property string $estado
+ * @property EstadoEvento $estado
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property-read Collection<int, Asignacion> $asignaciones
@@ -23,6 +25,7 @@ use Illuminate\Support\Carbon;
  * @property-read Iglesia $iglesia
  * @property-read Collection<int, EventoRol> $rolesRequeridos
  * @property-read int|null $roles_requeridos_count
+ * @property-read Collection<int, EventoHistorial> $historial
  *
  * @method static \Database\Factories\EventoFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Evento newModelQuery()
@@ -55,6 +58,7 @@ class Evento extends Model
 
     protected $casts = [
         'fecha' => 'date',
+        'estado' => EstadoEvento::class,
     ];
 
     public function iglesia()
@@ -75,5 +79,171 @@ class Evento extends Model
     public function asignaciones()
     {
         return $this->hasMany(Asignacion::class);
+    }
+
+    public function historial()
+    {
+        return $this->hasMany(EventoHistorial::class);
+    }
+
+    public function registrarHistorial(
+        string $accion,
+        string $descripcion
+    ): void {
+        /** @var User|null $user */
+        $user = Auth::user();
+        $this->historial()->create([
+            'user_id' => $user->id,
+            'accion' => $accion,
+            'descripcion' => $descripcion,
+        ]);
+    }
+
+    public function estaPendiente(): bool
+    {
+        return $this->estado === EstadoEvento::PENDIENTE;
+    }
+
+    public function estaOrganizado(): bool
+    {
+        return $this->estado === EstadoEvento::ORGANIZADO;
+    }
+
+    public function estaRealizado(): bool
+    {
+        return $this->estado === EstadoEvento::REALIZADO;
+    }
+
+    public function estaCancelado(): bool
+    {
+        return $this->estado === EstadoEvento::CANCELADO;
+    }
+
+    public function puedeModificarDatos(): bool
+    {
+        return $this->estaPendiente();
+    }
+
+    public function puedeModificarRoles(): bool
+    {
+        return $this->estaPendiente();
+    }
+
+    public function puedeModificarAsignaciones(): bool
+    {
+        return $this->estaPendiente()
+            || $this->estaOrganizado();
+    }
+
+    public function puedeOrganizar(): bool
+    {
+        return $this->estaPendiente()
+            && $this->estaCompleto();
+    }
+
+    public function puedeRealizar(): bool
+    {
+        return $this->estaOrganizado();
+    }
+
+    public function puedeCancelar(): bool
+    {
+        return ! $this->estaRealizado()
+            && ! $this->estaCancelado();
+    }
+
+    public function estaCompleto(): bool
+    {
+        foreach ($this->rolesRequeridos as $rol) {
+
+            if (
+                $rol->asignaciones()->count() < $rol->cantidad
+            ) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    public function puedeCambiarEstado(): bool
+    {
+        return ! $this->estaRealizado()
+            && ! $this->estaCancelado();
+    }
+
+    public function porcentajeCompleto(): int
+    {
+        $roles = $this->rolesRequeridos;
+
+        if ($roles->isEmpty()) {
+            return 0;
+        }
+
+        $requeridos = $roles->sum('cantidad');
+
+        $asignados = $roles->sum(function ($rol) {
+            return min(
+                $rol->cantidad,
+                $rol->asignaciones()->count()
+            );
+        });
+
+        return (int) floor(
+            ($asignados / $requeridos) * 100
+        );
+    }
+
+    public function organizar(): void
+    {
+        if (! $this->puedeOrganizar()) {
+            abort(403);
+        }
+
+        $this->update([
+            'estado' => EstadoEvento::ORGANIZADO,
+        ]);
+
+        $this->registrarHistorial(
+            'organizado',
+            'Evento organizado.'
+        );
+    }
+
+    public function realizar(): void
+    {
+        if (! $this->puedeRealizar()) {
+            abort(403);
+        }
+
+        $this->update([
+            'estado' => EstadoEvento::REALIZADO,
+        ]);
+
+        $this->registrarHistorial(
+            'realizado',
+            'Evento realizado.'
+        );
+    }
+
+    public function cancelar(): void
+    {
+        if (! $this->puedeCancelar()) {
+            abort(403);
+        }
+
+        $this->update([
+            'estado' => EstadoEvento::CANCELADO,
+        ]);
+
+        $this->registrarHistorial(
+            'cancelado',
+            'Evento cancelado.'
+        );
+    }
+
+    public function getEstadoLabelAttribute(): string
+    {
+        return $this->estado->getLabel();
     }
 }

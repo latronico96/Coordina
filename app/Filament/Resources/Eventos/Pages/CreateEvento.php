@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\Eventos\Pages;
 
 use App\Filament\Resources\Eventos\EventoResource;
+use App\Models\Evento;
 use App\Models\User;
 use Filament\Resources\Pages\CreateRecord;
 use Illuminate\Support\Facades\Auth;
@@ -20,5 +21,15 @@ class CreateEvento extends CreateRecord
             : null;
 
         return $data;
+    }
+
+    protected function afterCreate(): void
+    {
+        /** @var Evento $evento */
+        $evento = $this->record;
+        $evento->registrarHistorial(
+            'creado',
+            'Evento creado'
+        );
     }
 }

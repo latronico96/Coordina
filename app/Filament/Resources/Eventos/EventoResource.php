@@ -8,6 +8,7 @@ use App\Filament\Resources\Eventos\Pages\EditEvento;
 use App\Filament\Resources\Eventos\Pages\ListEventos;
 use App\Filament\Resources\Eventos\Pages\ViewEvento;
 use App\Filament\Resources\Eventos\RelationManagers\AsignacionesRelationManager;
+use App\Filament\Resources\Eventos\RelationManagers\HistorialRelationManager;
 use App\Filament\Resources\Eventos\RelationManagers\RolesRelationManager;
 use App\Filament\Resources\Eventos\Schemas\EventoForm;
 use App\Filament\Resources\Eventos\Schemas\EventoInfolist;
@@ -55,6 +56,7 @@ class EventoResource extends EntidadDeIglesiaResource
         return [
             RolesRelationManager::class,
             AsignacionesRelationManager::class,
+            HistorialRelationManager::class,
         ];
     }
 

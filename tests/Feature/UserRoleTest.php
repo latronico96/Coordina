@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Enums\RolUsuario;
 use App\Models\Iglesia;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -15,10 +16,10 @@ class UserRoleTest extends TestCase
     {
         $user = User::factory()->create();
 
-        $user->assignRole('super-admin');
+        $user->assignRole(RolUsuario::SUPER_ADMIN);
 
         $this->assertTrue(
-            $user->hasRole('super-admin')
+            $user->hasRole(RolUsuario::SUPER_ADMIN)
         );
     }
 

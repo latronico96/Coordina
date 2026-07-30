@@ -2,9 +2,9 @@
 
 namespace App\Filament\Resources\Eventos\Tables;
 
+use App\Enums\EstadoEvento;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
-use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
@@ -33,35 +33,33 @@ class EventosTable
                     ->time(),
                 TextColumn::make('estado')
                     ->badge()
-                    ->color(fn (string $state): string => match ($state) {
-                        'draft' => 'gray',
-                        'confirmado' => 'info',
-                        'pendiente' => 'warning',
-                        'realizado' => 'success',
-                        'cancelado' => 'danger',
-                    }),
+                    ->color(fn (EstadoEvento $state): string|array|null => $state->getColor())
+                    ->icon(fn (EstadoEvento $state): ?string => $state->getIcon()),
+                TextColumn::make('estado')
+                    ->badge()
+                    ->color(fn ($state) => match ($state) {
+                        EstadoEvento::PENDIENTE => 'warning',
+                        EstadoEvento::ORGANIZADO => 'success',
+                        EstadoEvento::REALIZADO => 'info',
+                        EstadoEvento::CANCELADO => 'danger',
+                    })
+                    ->icon(fn ($state) => $state->getIcon()),
+
                 TextColumn::make('updated_at')
                     ->label('Actualizado')
                     ->since(),
             ])
 
             ->filters([
-
                 SelectFilter::make('estado')
-                    ->options([
-                        'pendiente' => 'Pendiente',
-                        'confirmado' => 'Confirmado',
-                        'realizado' => 'Realizado',
-                        'cancelado' => 'Cancelado',
-                    ]),
+                    ->options(EstadoEvento::options()),
 
                 SelectFilter::make('iglesia_id')
                     ->relationship('iglesia', 'nombre'),
             ])
-
+            ->recordUrl(null)
             ->recordActions([
                 ViewAction::make(),
-                EditAction::make(),
             ])
 
             ->toolbarActions([

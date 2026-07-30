@@ -29,6 +29,9 @@ class EventoForm
                     ->searchable()
                     ->preload()
                     ->placeholder('Sin plantilla')
+                    ->disabled(
+                        fn ($record) => $record !== null
+                    )
                     ->relationship(
                         'eventoRecurrente',
                         'nombre',
@@ -39,7 +42,6 @@ class EventoForm
                         if (! $state) {
                             $set('nombre', null);
                             $set('hora_inicio', null);
-                            $set('estado', 'pendiente');
                             $set('fecha', null);
 
                             return;
@@ -63,27 +65,24 @@ class EventoForm
 
                         $set('nombre', $plantilla->nombre);
                         $set('hora_inicio', $plantilla->hora_inicio);
-                        $set('estado', 'pendiente');
                         $set('fecha', $fecha->toDateString());
                     }),
 
                 TextInput::make('nombre')
-                    ->required(),
+                    ->disabled(
+                        fn ($record) => $record && ! $record->puedeModificarDatos()
+                    ),
 
                 DatePicker::make('fecha')
+                    ->disabled(
+                        fn ($record) => $record && ! $record->puedeModificarDatos()
+                    )
                     ->required(),
 
                 TimePicker::make('hora_inicio')
-                    ->required(),
-
-                Select::make('estado')
-                    ->options([
-                        'pendiente' => 'Pendiente',
-                        'confirmado' => 'Confirmado',
-                        'realizado' => 'Realizado',
-                        'cancelado' => 'Cancelado',
-                    ])
-                    ->default('pendiente')
+                    ->disabled(
+                        fn ($record) => $record && ! $record->puedeModificarDatos()
+                    )
                     ->required(),
             ]);
     }

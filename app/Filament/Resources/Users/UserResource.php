@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Users;
 
+use App\Enums\RolUsuario;
 use App\Filament\Resources\Users\Pages\CreateUser;
 use App\Filament\Resources\Users\Pages\EditUser;
 use App\Filament\Resources\Users\Pages\ListUsers;
@@ -69,6 +70,6 @@ class UserResource extends Resource
         /** @var User|null $user */
         $user = Auth::user();
 
-        return $user?->hasRole('super-admin');
+        return $user?->hasRole(RolUsuario::SUPER_ADMIN);
     }
 }

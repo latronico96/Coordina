@@ -3,6 +3,8 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+use App\Enums\RolUsuario;
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
@@ -105,9 +107,9 @@ class User extends Authenticatable
     public function canAccessFilament(): bool
     {
         return $this->hasAnyRole([
-            'super-admin',
-            'admin-iglesia',
-            'lider-ministerio',
+            RolUsuario::SUPER_ADMIN,
+            RolUsuario::ADMIN_IGLESIA,
+            RolUsuario::LIDER_MINISTERIO,
         ]);
     }
 }

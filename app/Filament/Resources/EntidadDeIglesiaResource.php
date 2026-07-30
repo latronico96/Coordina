@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Enums\RolUsuario;
 use App\Models\User;
 use Filament\Resources\Resource;
 use Illuminate\Database\Eloquent\Builder;
@@ -20,7 +21,7 @@ abstract class EntidadDeIglesiaResource extends Resource
             return $query->whereRaw('1 = 0');
         }
 
-        if ($user->hasRole('super-admin')) {
+        if ($user->hasRole(RolUsuario::SUPER_ADMIN)) {
             return $query;
         }
 
