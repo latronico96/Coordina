@@ -126,7 +126,7 @@ class Evento extends Model
 
     public function puedeModificarRoles(): bool
     {
-        return $this->estaPendiente();
+        return $this->estaPendiente() && $this->asignaciones()->count() === 0;
     }
 
     public function puedeModificarAsignaciones(): bool
