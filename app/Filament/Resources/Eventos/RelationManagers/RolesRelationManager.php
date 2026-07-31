@@ -2,9 +2,9 @@
 
 namespace App\Filament\Resources\Eventos\RelationManagers;
 
-use App\Models\RolServicio;
 use App\Models\Evento;
 use App\Models\EventoRol;
+use App\Models\RolServicio;
 use Filament\Actions\CreateAction;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\EditAction;
@@ -138,57 +138,50 @@ class RolesRelationManager extends RelationManager
                 EditAction::make()
                     ->visible(
                         fn () => $this->evento()->puedeModificarRoles()
-                    ),
+                    )
+                    ->after(function () {
+                        $this->evento()->registrarHistorial(
+                            'rol_modificado',
+                            'Se modificó un rol requerido.'
+                        );
+                    }),
 
                 DeleteAction::make()
                     ->requiresConfirmation()
                     ->visible(
                         fn () => $this->evento()->puedeModificarRoles()
-                    ),
+                    )
+                    ->after(function () {
+                        $this->evento()->registrarHistorial(
+                            'rol_eliminado',
+                            'Se eliminó un rol requerido.'
+                        );
+                    }),
 
             ])
 
             ->headerActions([
-
                 CreateAction::make()
                     ->visible(
                         fn () => $this->evento()->puedeModificarRoles()
-                    ),
+                    )
+                    ->after(function () {
+                        $this->evento()->registrarHistorial(
+                            'rol_agregado',
+                            'Se agregó un rol requerido al evento.'
+                        );
+                    }),
 
             ])
 
             ->paginated(false);
     }
 
-    protected function afterCreate(): void
-    {
-        $this->evento()->registrarHistorial(
-            'rol_agregado',
-            'Se agregó un rol requerido al evento.'
-        );
-    }
-
-    protected function afterSave(): void
-    {
-        $this->evento()->registrarHistorial(
-            'rol_modificado',
-            'Se modificó un rol requerido del evento.'
-        );
-    }
-
-    protected function afterDelete(): void
-    {
-        $this->evento()->registrarHistorial(
-            'rol_eliminado',
-            'Se eliminó un rol requerido del evento.'
-        );
-    }
-
     protected function evento(): Evento
-{
-    /** @var Evento $evento */
-    $evento = $this->getOwnerRecord();
+    {
+        /** @var Evento $evento */
+        $evento = $this->getOwnerRecord();
 
-    return $evento;
-}
+        return $evento;
+    }
 }

@@ -15,18 +15,28 @@ class HistorialRelationManager extends RelationManager
     public function table(Table $table): Table
     {
         return $table
+            ->defaultSort('created_at', 'desc')
             ->columns([
 
                 TextColumn::make('created_at')
-                    ->dateTime(),
+                    ->label('Fecha')
+                    ->sinceTooltip()
+                    ->dateTime('d/m/Y H:i'),
 
                 TextColumn::make('user.name')
-                    ->label('Usuario'),
+                    ->label('Usuario')
+                    ->placeholder('Sistema'),
 
-                TextColumn::make('accion'),
-
-                TextColumn::make('descripcion'),
-
-            ]);
+                TextColumn::make('accion')
+                    ->badge()
+                    ->formatStateUsing(fn (string $state) => str($state)
+                        ->replace('_', ' ')
+                        ->title()),
+                TextColumn::make('descripcion')
+                    ->wrap()
+                    ->searchable(),
+            ])
+            ->recordActions([])
+            ->headerActions([]);
     }
 }

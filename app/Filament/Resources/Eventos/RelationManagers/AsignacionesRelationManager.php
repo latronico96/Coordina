@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Eventos\RelationManagers;
 
+use App\Models\Asignacion;
 use App\Models\Evento;
 use App\Models\EventoRol;
 use Filament\Actions\CreateAction;
@@ -13,9 +14,6 @@ use Filament\Schemas\Schema;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 
-/**
- * @property Evento $ownerRecord
- */
 class AsignacionesRelationManager extends RelationManager
 {
     protected static string $relationship = 'asignaciones';
@@ -28,17 +26,30 @@ class AsignacionesRelationManager extends RelationManager
                 Select::make('evento_rol_id')
                     ->label('Rol requerido')
                     ->options(function () {
-                        return $this->ownerRecord
+                        return $this->evento()
                             ->rolesRequeridos()
-                            ->with('rolServicio')
+                            ->with([
+                                'rolServicio',
+                                'asignaciones',
+                            ])
                             ->get()
+                            ->filter(function ($rol) {
+                                return $rol->asignaciones->count() < $rol->cantidad;
+                            })
                             ->mapWithKeys(fn ($rol) => [
                                 $rol->id => $rol->rolServicio->nombre.
-                                    ' (x'.$rol->cantidad.')',
+                                    ' ('.
+                                    $rol->asignaciones->count().
+                                    '/'.
+                                    $rol->cantidad.
+                                    ')',
                             ]);
                     })
                     ->live()
                     ->afterStateUpdated(fn ($set) => $set('servidor_id', null))
+                    ->disabled(
+                        fn () => ! $this->evento()->puedeModificarAsignaciones()
+                    )
                     ->required(),
 
                 Select::make('servidor_id')
@@ -60,15 +71,19 @@ class AsignacionesRelationManager extends RelationManager
                                 return $query;
                             }
 
-                            return $query->whereHas(
-                                'rolesServicio',
-                                function ($q) use ($eventoRol) {
-                                    $q->where(
-                                        'rol_servicio_id',
-                                        $eventoRol->rol_servicio_id
-                                    );
-                                }
-                            );
+                            return $query
+                                ->where('activo', true)
+                                ->whereHas(
+                                    'rolesServicio',
+                                    function ($q) use ($eventoRol) {
+                                        $q->where(
+                                            'rol_servicio_id',
+                                            $eventoRol->rol_servicio_id
+                                        );
+                                    }
+                                )
+                                ->orderBy('apellido')
+                                ->orderBy('nombre');
                         }
                     )
                     ->getOptionLabelFromRecordUsing(
@@ -76,6 +91,28 @@ class AsignacionesRelationManager extends RelationManager
                     )
                     ->searchable()
                     ->preload()
+                    ->disabled(
+                        fn () => ! $this->evento()->puedeModificarAsignaciones()
+                    )
+                    ->rules([
+                        function () {
+                            return function (string $attribute, $value, \Closure $fail) {
+
+                                $query = $this->evento()
+                                    ->asignaciones()
+                                    ->where('servidor_id', $value);
+
+                                if ($record = $this->getMountedAction()?->getRecord()) {
+                                    /** @var Asignacion $record */
+                                    $query->whereKeyNot($record->getKey());
+                                }
+
+                                if ($query->exists()) {
+                                    $fail('Ese servidor ya está asignado a este evento.');
+                                }
+                            };
+                        },
+                    ])
                     ->required(),
 
                 Select::make('estado')
@@ -85,13 +122,16 @@ class AsignacionesRelationManager extends RelationManager
                         'rechazado' => 'Rechazado',
                     ])
                     ->default('pendiente')
+                    ->disabled(
+                        fn () => ! $this->evento()->puedeModificarAsignaciones()
+                    )
                     ->required(),
             ]);
     }
 
     protected function mutateFormDataBeforeCreate(array $data): array
     {
-        $data['evento_id'] = $this->ownerRecord->id;
+        $data['evento_id'] = $this->evento()->id;
 
         return $data;
     }
@@ -102,24 +142,60 @@ class AsignacionesRelationManager extends RelationManager
             ->columns([
 
                 TextColumn::make('servidor.nombre')
-                    ->label('Servidor'),
-
-                TextColumn::make('servidor.apellido')
-                    ->label('Apellido'),
+                    ->label('Servidor')
+                    ->formatStateUsing(
+                        fn ($state, $record) => $record->servidor->nombre.
+                            ' '.
+                            $record->servidor->apellido
+                    )
+                    ->searchable(),
 
                 TextColumn::make('eventoRol.rolServicio.nombre')
                     ->label('Rol'),
 
                 TextColumn::make('estado')
-                    ->badge(),
+                    ->badge()
+                    ->color(fn ($state) => match ($state) {
+                        'pendiente' => 'warning',
+                        'confirmado' => 'success',
+                        'rechazado' => 'danger',
+                        default => 'gray',
+                    }),
 
             ])
             ->recordActions([
-                EditAction::make(),
-                DeleteAction::make(),
+                EditAction::make()
+                    ->after(function () {
+                        $this->evento()->registrarHistorial(
+                            'asignacion_modificada',
+                            'Se modificó una asignación.'
+                        );
+                    }),
+                DeleteAction::make()
+                    ->after(function () {
+                        $this->evento()->registrarHistorial(
+                            'asignacion_eliminada',
+                            'Se eliminó una asignación.'
+                        );
+                    }),
             ])
             ->headerActions([
-                CreateAction::make(),
-            ]);
+                CreateAction::make()
+                    ->after(function () {
+                        $this->evento()->registrarHistorial(
+                            'asignacion_agregada',
+                            'Se agregó una asignación.'
+                        );
+                    }),
+            ])
+            ->defaultSort('estado');
+    }
+
+    protected function evento(): Evento
+    {
+        /** @var Evento $evento */
+        $evento = $this->getOwnerRecord();
+
+        return $evento;
     }
 }
