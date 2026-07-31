@@ -165,26 +165,52 @@ class AsignacionesRelationManager extends RelationManager
             ])
             ->recordActions([
                 EditAction::make()
-                    ->after(function () {
+                    ->after(function (EditAction $action) {
+                        /** @var Asignacion $asignacion */
+                        $asignacion = $action->getRecord();
+
                         $this->evento()->registrarHistorial(
                             'asignacion_modificada',
-                            'Se modificó una asignación.'
+                            sprintf(
+                                'Se modificó la asignación de %s %s (%s). Estado: %s.',
+                                $asignacion->servidor->nombre,
+                                $asignacion->servidor->apellido,
+                                $asignacion->eventoRol->rolServicio->nombre,
+                                ucfirst($asignacion->estado)
+                            )
                         );
                     }),
                 DeleteAction::make()
-                    ->after(function () {
+                    ->before(function (DeleteAction $action) {
+                        /** @var Asignacion $asignacion */
+                        $asignacion = $action->getRecord();
+
                         $this->evento()->registrarHistorial(
                             'asignacion_eliminada',
-                            'Se eliminó una asignación.'
+                            sprintf(
+                                'Se eliminó la asignación de %s %s como %s.',
+                                $asignacion->servidor->nombre,
+                                $asignacion->servidor->apellido,
+                                $asignacion->eventoRol->rolServicio->nombre
+                            )
                         );
                     }),
             ])
             ->headerActions([
                 CreateAction::make()
-                    ->after(function () {
+                    ->after(function (CreateAction $action) {
+                        /** @var Asignacion $asignacion */
+                        $asignacion = $action->getRecord();
+
                         $this->evento()->registrarHistorial(
                             'asignacion_agregada',
-                            'Se agregó una asignación.'
+                            sprintf(
+                                'Se asignó a %s %s como %s (%s).',
+                                $asignacion->servidor->nombre,
+                                $asignacion->servidor->apellido,
+                                $asignacion->eventoRol->rolServicio->nombre,
+                                ucfirst($asignacion->estado)
+                            )
                         );
                     }),
             ])

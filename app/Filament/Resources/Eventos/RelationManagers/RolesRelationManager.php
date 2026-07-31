@@ -139,10 +139,14 @@ class RolesRelationManager extends RelationManager
                     ->visible(
                         fn () => $this->evento()->puedeModificarRoles()
                     )
-                    ->after(function () {
+                    ->after(function (EditAction $action) {
+
+                        /** @var EventoRol $rol */
+                        $rol = $action->getRecord();
+
                         $this->evento()->registrarHistorial(
                             'rol_modificado',
-                            'Se modificó un rol requerido.'
+                            "Se modificó el rol '{$rol->rolServicio->nombre}' a {$rol->cantidad} lugar(es)."
                         );
                     }),
 
@@ -151,10 +155,14 @@ class RolesRelationManager extends RelationManager
                     ->visible(
                         fn () => $this->evento()->puedeModificarRoles()
                     )
-                    ->after(function () {
+                    ->before(function (DeleteAction $action) {
+
+                        /** @var EventoRol $rol */
+                        $rol = $action->getRecord();
+
                         $this->evento()->registrarHistorial(
                             'rol_eliminado',
-                            'Se eliminó un rol requerido.'
+                            "Se eliminó el rol '{$rol->rolServicio->nombre}' (x {$rol->cantidad})."
                         );
                     }),
 
@@ -165,10 +173,12 @@ class RolesRelationManager extends RelationManager
                     ->visible(
                         fn () => $this->evento()->puedeModificarRoles()
                     )
-                    ->after(function () {
+                    ->after(function (CreateAction $action) {
+                        /** @var EventoRol $rol */
+                        $rol = $action->getRecord();
                         $this->evento()->registrarHistorial(
                             'rol_agregado',
-                            'Se agregó un rol requerido al evento.'
+                            "Se agregó el rol '{$rol->rolServicio->nombre}' x {$rol->cantidad}."
                         );
                     }),
 
