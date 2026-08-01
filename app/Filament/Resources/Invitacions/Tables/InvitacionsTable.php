@@ -31,13 +31,13 @@ class InvitacionsTable
                 TextColumn::make('estado')
                     ->label('Estado')
                     ->badge()
-                    ->state(function ($record) {
+                    ->state(function ($record, InvitacionService $service) {
 
                         if ($record->accepted_at) {
                             return 'Aceptada';
                         }
 
-                        if ($record->expires_at->isPast()) {
+                        if (! $service->valida($record)) {
                             return 'Vencida';
                         }
 
@@ -48,18 +48,20 @@ class InvitacionsTable
                             'Aceptada' => 'success',
                             'Pendiente' => 'warning',
                             'Vencida' => 'danger',
+                            default => 'gray',
                         };
                     }),
 
-                TextColumn::make('expires_at')
+                TextColumn::make('actionToken.expires_at')
                     ->label('Vence')
                     ->dateTime('d/m/Y H:i')
                     ->sortable(),
 
-                TextColumn::make('usuario.name')
+                TextColumn::make('user.name')
                     ->label('Usuario')
                     ->placeholder('-')
                     ->searchable(),
+
             ])
 
             ->filters([
@@ -74,8 +76,10 @@ class InvitacionsTable
                     ->icon('heroicon-o-envelope')
                     ->color('primary')
                     ->requiresConfirmation()
-                    ->hidden(fn ($record, InvitacionService $service) => ! $service->valida($record))
+                    ->hidden(fn ($record, InvitacionService $service) => ! $service->valida($record)
+                    )
                     ->action(function ($record, InvitacionService $service) {
+
                         if (! $service->valida($record)) {
 
                             Notification::make()
@@ -85,7 +89,9 @@ class InvitacionsTable
 
                             return;
                         }
+
                         $service->enviar($record);
+
                         Notification::make()
                             ->title('Invitación reenviada')
                             ->success()
@@ -94,12 +100,14 @@ class InvitacionsTable
                 Action::make('copiar')
                     ->icon('heroicon-o-link')
                     ->color('gray')
-                    ->action(function () {
+                    ->action(function ($record, InvitacionService $service) {
+
+                        $url = $record->url();
 
                         Notification::make()
-                            ->title('Próximamente')
-                            ->body('Aquí copiaremos el enlace de invitación.')
-                            ->info()
+                            ->title('Enlace copiado')
+                            ->body($url)
+                            ->success()
                             ->send();
                     }),
 
@@ -107,7 +115,8 @@ class InvitacionsTable
                     ->icon('heroicon-o-arrow-path')
                     ->color('warning')
                     ->requiresConfirmation()
-                    ->hidden(fn ($record) => $record->accepted_at !== null)
+                    ->hidden(fn ($record) => $record->accepted_at !== null
+                    )
                     ->action(function ($record, InvitacionService $service) {
                         if ($record->accepted_at) {
                             Notification::make()
@@ -120,7 +129,7 @@ class InvitacionsTable
                         $service->renovarYEnviar($record);
                         Notification::make()
                             ->title('Invitación renovada')
-                            ->body('Se renovo la invitacion.')
+                            ->body('Se generó un nuevo enlace.')
                             ->success()
                             ->send();
                     }),

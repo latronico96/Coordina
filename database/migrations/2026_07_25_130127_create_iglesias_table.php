@@ -17,6 +17,18 @@ return new class extends Migration
             $table->string('nombre');
             $table->string('direccion')->nullable();
             $table->boolean('activo')->default(true);
+            // Personalización
+            $table->string('logo_url')->nullable();
+            $table->string('color_primario', 20)->nullable();
+            $table->string('color_secundario', 20)->nullable();
+
+            // Google Calendar
+            $table->boolean('google_calendar_habilitado')->default(false);
+            $table->string('google_calendar_id')->nullable();
+
+            // Datos de contacto
+            $table->string('email_contacto')->nullable();
+            $table->string('telefono_contacto')->nullable();
         });
     }
 

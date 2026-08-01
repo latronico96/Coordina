@@ -23,7 +23,7 @@
 
     <p>
         Esta invitación vence el
-        <strong>{{ $invitacion->expires_at->format('d/m/Y H:i') }}</strong>.
+        <strong>{{ $invitacion->token()->expires_at->format('d/m/Y H:i') }}</strong>.
     </p>
 
     <p>

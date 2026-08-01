@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\ActionToken;
 use App\Models\Asignacion;
 use App\Models\Evento;
 use App\Models\EventoRecurrente;
@@ -14,6 +15,7 @@ use App\Models\RolServicio;
 use App\Models\Servidor;
 use App\Models\User;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Carbon;
 
 class DemoSeeder2 extends Seeder
 {
@@ -27,6 +29,9 @@ class DemoSeeder2 extends Seeder
     {
         $iglesia = Iglesia::factory()->create([
             'nombre' => $nombre,
+            'logo_url' => 'https://yt3.googleusercontent.com/WJNcJ2bT92YRuYJNbfKG84L8biXjimj0a7hqYalSAAqTGFbJX9cQsLi5VBMyikB87CeDhjU-NA=s160-c-k-c0x00ffffff-no-rj',
+            'google_calendar_habilitado' => 1,
+            'google_calendar_id' => '23c8b4f2529c00537c4cd03cda7d119e67278b9d66844c3aaf5ef3d8de100527@group.calendar.google.com',
         ]);
 
         $ministerio = Ministerio::factory()
@@ -72,6 +77,9 @@ class DemoSeeder2 extends Seeder
             ->count(4)
             ->for($iglesia)
             ->for($eventoRecurrente)
+            ->state([
+                'fecha' => Carbon::tomorrow()->toDateString(),
+            ])
             ->create();
 
         foreach ($eventos as $evento) {
@@ -116,7 +124,6 @@ class DemoSeeder2 extends Seeder
             ->for($iglesia)
             ->create()
             ->each(function ($u, $index) use ($nombre) {
-
                 $u->update([
                     'name' => "Lider {$nombre} {$index}",
                 ]);
@@ -124,21 +131,57 @@ class DemoSeeder2 extends Seeder
                 $u->assignRole('lider-ministerio');
             });
 
+        // Pendientes
         Invitacion::factory()
             ->count(5)
             ->for($iglesia)
-            ->create();
+            ->create()
+            ->each(function (Invitacion $invitacion) {
 
-        Invitacion::factory()
-            ->aceptada()
-            ->for($iglesia)
-            ->count(2)
-            ->create();
+                ActionToken::factory()
+                    ->invitacion()
+                    ->create([
+                        'user_id' => $invitacion->user_id,
+                        'payload' => [
+                            'invitacion_id' => $invitacion->id,
+                        ],
+                    ]);
+            });
 
+        // Aceptadas
         Invitacion::factory()
-            ->vencida()
-            ->for($iglesia)
             ->count(2)
-            ->create();
+            ->for($iglesia)
+            ->create()
+            ->each(function (Invitacion $invitacion) {
+
+                ActionToken::factory()
+                    ->invitacion()
+                    ->usado()
+                    ->create([
+                        'user_id' => $invitacion->user_id,
+                        'payload' => [
+                            'invitacion_id' => $invitacion->id,
+                        ],
+                    ]);
+            });
+
+        // Vencidas
+        Invitacion::factory()
+            ->count(2)
+            ->for($iglesia)
+            ->create()
+            ->each(function (Invitacion $invitacion) {
+
+                ActionToken::factory()
+                    ->invitacion()
+                    ->vencido()
+                    ->create([
+                        'user_id' => $invitacion->user_id,
+                        'payload' => [
+                            'invitacion_id' => $invitacion->id,
+                        ],
+                    ]);
+            });
     }
 }

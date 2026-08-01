@@ -79,7 +79,7 @@ class IglesiaServiceTest extends TestCase
         );
 
         $this->assertTrue(
-            $invitacion->expires_at->isFuture()
+            $invitacion->token()->expires_at->isFuture()
         );
     }
 }

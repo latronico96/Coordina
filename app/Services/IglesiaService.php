@@ -23,6 +23,13 @@ class IglesiaService
                 'nombre' => $datos['nombre'],
                 'direccion' => $datos['direccion'] ?? null,
                 'activo' => true,
+                'logo_url'=> $datos['logo_url'] ?? null,
+                'color_primario'=> $datos['color_primario'] ?? null,
+                'color_secundario'=> $datos['color_secundario'] ?? null,
+                'google_calendar_habilitado'=> $datos['google_calendar_habilitado'] ?? null,
+                'google_calendar_id'=> $datos['google_calendar_id'] ?? null,
+                'email_contacto'=> $datos['email_contacto'] ?? null,
+                'telefono_contacto'=> $datos['telefono_contacto'] ?? null,
             ]);
 
             $usuario = User::create([

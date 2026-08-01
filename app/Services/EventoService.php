@@ -2,6 +2,8 @@
 
 namespace App\Services;
 
+use App\Builders\Calendar\CalendarEventBuilder;
+use App\Enums\EstadoEvento;
 use App\Models\Evento;
 use App\Models\EventoRecurrente;
 use Carbon\Carbon;
@@ -9,6 +11,11 @@ use Illuminate\Support\Facades\DB;
 
 class EventoService
 {
+    public function __construct(
+        private readonly GoogleCalendarService $googleCalendar,
+        private readonly InvitacionService $invitacionService,
+    ) {}
+
     public function crearDesdeRecurrente(
         EventoRecurrente $eventoRecurrente,
         Carbon $fecha
@@ -33,5 +40,65 @@ class EventoService
 
             return $evento;
         });
+    }
+
+    public function organizar(Evento $evento): void
+    {
+        if (! $evento->puedeOrganizar()) {
+            abort(403);
+        }
+        $evento->update([
+            'estado' => EstadoEvento::ORGANIZADO,
+        ]);
+        $evento->registrarHistorial(
+            'organizado',
+            'Evento organizado.'
+        );
+
+        app(EventoNotificacionService::class)
+            ->notificarServidores($evento);
+        $this->crearEventoCalendario($evento);
+    }
+
+    public function realizar(Evento $evento): void
+    {
+        if (! $evento->puedeRealizar()) {
+            abort(403);
+        }
+        $evento->update([
+            'estado' => EstadoEvento::REALIZADO,
+        ]);
+        $evento->registrarHistorial(
+            'realizado',
+            'Evento marcado como realizado.'
+        );
+    }
+
+    public function cancelar(Evento $evento): void
+    {
+        if (! $evento->puedeCancelar()) {
+            abort(403);
+        }
+
+        $evento->update([
+            'estado' => EstadoEvento::CANCELADO,
+        ]);
+
+        $evento->registrarHistorial(
+            'cancelado',
+            'Evento cancelado.'
+        );
+    }
+
+    private function crearEventoCalendario(Evento $evento): void
+    {
+        $calendarEvent = CalendarEventBuilder::fromEvento($evento);
+        $googleId = $this->googleCalendar->crearEvento(
+            $evento->iglesia->google_calendar_id,
+            $calendarEvent
+        );
+        $evento->update([
+            'google_calendar_event_id' => $googleId,
+        ]);
     }
 }

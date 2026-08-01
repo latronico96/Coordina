@@ -2,30 +2,52 @@
 
 namespace App\Services;
 
+use App\Enums\ActionTokenType;
 use App\Mail\InvitacionMail;
 use App\Models\Iglesia;
 use App\Models\Invitacion;
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Str;
-use RuntimeException;
 
 class InvitacionService
 {
+    public function __construct(
+        private readonly ActionTokenService $actionTokenService,
+    ) {}
+
     public function crear(
         Iglesia $iglesia,
         User $user,
         string $rol = 'admin-iglesia',
         int $diasExpiracion = 2,
     ): Invitacion {
-        return Invitacion::create([
-            'iglesia_id' => $iglesia->id,
-            'user_id' => $user->id,
-            'email' => $user->email,
-            'rol' => $rol,
-            'token' => Str::random(64),
-            'expires_at' => now()->addDays($diasExpiracion),
-        ]);
+
+        return DB::transaction(function () use (
+            $iglesia,
+            $user,
+            $rol,
+            $diasExpiracion,
+        ) {
+
+            $invitacion = Invitacion::create([
+                'iglesia_id' => $iglesia->id,
+                'user_id' => $user->id,
+                'email' => $user->email,
+                'rol' => $rol,
+            ]);
+
+            $this->actionTokenService->crear(
+                ActionTokenType::INVITACION,
+                user: $user,
+                payload: [
+                    'invitacion_id' => $invitacion->id,
+                ],
+                dias: $diasExpiracion,
+            );
+
+            return $invitacion;
+        });
     }
 
     public function enviar(Invitacion $invitacion): void
@@ -40,6 +62,7 @@ class InvitacionService
         string $rol = 'admin-iglesia',
         int $diasExpiracion = 2,
     ): Invitacion {
+
         $invitacion = $this->crear(
             $iglesia,
             $user,
@@ -57,38 +80,38 @@ class InvitacionService
         $invitacion->update([
             'accepted_at' => now(),
         ]);
-    }
 
-    public function valida(Invitacion $invitacion): bool
-    {
-        return $invitacion->accepted_at === null
-            && $invitacion->expires_at->isFuture();
+        $this->actionTokenService->marcarComoUsado(
+            $invitacion->token()
+        );
     }
 
     public function buscarPorToken(string $token): ?Invitacion
     {
-        return Invitacion::query()
-            ->with([
-                'user',
-                'iglesia',
-            ])
-            ->where('token', $token)
-            ->first();
+        $actionToken = $this->actionTokenService
+            ->buscar($token);
+
+        if (! $actionToken) {
+            return null;
+        }
+
+        $invitacionId = $actionToken->payload['invitacion_id'];
+
+        return Invitacion::with([
+            'user',
+            'iglesia',
+        ])->find($invitacionId);
     }
 
     public function renovar(
         Invitacion $invitacion,
         int $dias = 2,
     ): Invitacion {
-        if ($invitacion->accepted_at) {
-            throw new RuntimeException('No se puede renovar una invitación aceptada.');
-        }
 
-        $invitacion->update([
-            'token' => Str::random(64),
-            'accepted_at' => null,
-            'expires_at' => now()->addDays($dias),
-        ]);
+        $this->actionTokenService->renovar(
+            $invitacion->token(),
+            dias: $dias,
+        );
 
         return $invitacion;
     }
@@ -97,9 +120,23 @@ class InvitacionService
         Invitacion $invitacion,
         int $dias = 2,
     ): Invitacion {
-        $this->renovar($invitacion);
+
+        $this->renovar(
+            $invitacion,
+            $dias,
+        );
+
         $this->enviar($invitacion);
 
         return $invitacion;
+    }
+
+    public function valida(Invitacion $invitacion): bool
+    {
+        $token = $invitacion->token();
+
+        return $token
+            && $token->used_at === null
+            && $token->expires_at->isFuture();
     }
 }

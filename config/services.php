@@ -35,4 +35,12 @@ return [
         ],
     ],
 
+    'google' => [
+        'calendar_credentials' => env('GOOGLE_CALENDAR_CREDENTIALS'),
+        'calendar_id' => env('GOOGLE_CALENDAR_ID'),
+        'client_id' => env('GOOGLE_CLIENT_ID'),
+        'client_secret' => env('GOOGLE_CLIENT_SECRET'),
+        'refresh_token' => env('GOOGLE_CALENDAR_REFRESH_TOKEN'),
+    ],
+
 ];

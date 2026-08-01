@@ -16,20 +16,21 @@ class IglesiasTable
     {
         return $table
             ->columns([
-                TextColumn::make('created_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                TextColumn::make('updated_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                TextColumn::make('nombre')
-                    ->searchable(),
-                TextColumn::make('direccion')
-                    ->searchable(),
+                TextColumn::make('nombre'),
                 IconColumn::make('activo')
                     ->boolean(),
+                IconColumn::make('google_calendar_habilitado')
+                    ->label('Calendar')
+                    ->boolean(),
+                TextColumn::make('usuarios_count')
+                    ->counts('usuarios')
+                    ->label('Usuarios'),
+                TextColumn::make('ministerios_count')
+                    ->counts('ministerios')
+                    ->label('Ministerios'),
+                TextColumn::make('servidores_count')
+                    ->counts('servidores')
+                    ->label('Servidores'),
             ])
             ->filters([
                 //

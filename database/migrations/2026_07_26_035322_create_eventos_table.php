@@ -31,7 +31,7 @@ return new class extends Migration
 
             $table->string('estado')
                 ->default('pendiente');
-
+            $table->string('google_calendar_event_id')->nullable()->index();
             $table->timestamps();
         });
     }

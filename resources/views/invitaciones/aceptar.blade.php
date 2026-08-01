@@ -51,7 +51,7 @@
 
 
     <form method="POST"
-        action="{{ route('invitacion.confirmar', $invitacion->token) }}">
+        action="{{ route('invitacion.confirmar', ($invitacion->token()->token)) }}">
 
         @csrf
 
@@ -68,7 +68,7 @@
                 <input
                     type="text"
                     name="name"
-                    value="{{ old('name', $invitacion->user?->name) }}"
+                    value="{{ old('name') }}"
                     autocomplete="Nombre invitacion"
                     required
                     class="w-full rounded-lg border-gray-300 px-4 py-3 text-base shadow-sm focus:border-indigo-500 focus:ring-indigo-500">

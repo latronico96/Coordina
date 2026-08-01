@@ -11,26 +11,40 @@ class InvitacionInfolist
     {
         return $schema
             ->components([
-                TextEntry::make('iglesia_id')
-                    ->numeric(),
+
+                TextEntry::make('iglesia.nombre')
+                    ->label('Iglesia'),
+
                 TextEntry::make('email')
-                    ->label('Email address'),
-                TextEntry::make('rol'),
-                TextEntry::make('token'),
-                TextEntry::make('expires_at')
-                    ->dateTime(),
+                    ->label('Email'),
+
+                TextEntry::make('rol')
+                    ->badge(),
+
+                TextEntry::make('usuario.name')
+                    ->label('Usuario')
+                    ->placeholder('-'),
+
+                TextEntry::make('actionToken.token')
+                    ->label('Token')
+                    ->copyable()
+                    ->placeholder('-'),
+
+                TextEntry::make('actionToken.expires_at')
+                    ->label('Vencimiento')
+                    ->dateTime()
+                    ->placeholder('-'),
+
                 TextEntry::make('accepted_at')
+                    ->label('Aceptada')
                     ->dateTime()
                     ->placeholder('-'),
-                TextEntry::make('user_id')
-                    ->numeric()
-                    ->placeholder('-'),
+
                 TextEntry::make('created_at')
-                    ->dateTime()
-                    ->placeholder('-'),
+                    ->dateTime(),
+
                 TextEntry::make('updated_at')
-                    ->dateTime()
-                    ->placeholder('-'),
+                    ->dateTime(),
             ]);
     }
 }

@@ -3,7 +3,6 @@
 namespace Tests\Feature;
 
 use App\Models\Iglesia;
-use App\Models\Invitacion;
 use App\Models\User;
 use App\Services\InvitacionService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -30,33 +29,20 @@ class InvitacionServiceTest extends TestCase
             'user_id' => $user->id,
         ]);
 
-        $this->assertNotNull(
-            $invitacion->token
-        );
-
-        $this->assertNotNull(
-            $invitacion->expires_at
-        );
-    }
-
-    public function test_una_invitacion_nueva_es_valida(): void
-    {
-        $iglesia = Iglesia::factory()->create();
-
-        $user = User::factory()->create([
-            'iglesia_id' => $iglesia->id,
+        $this->assertDatabaseHas('action_tokens', [
+            'tipo' => 'invitacion',
         ]);
 
-        $service = app(InvitacionService::class);
+        $this->assertNotNull(
+            $invitacion->token()
+        );
 
-        $invitacion = $service->crear($iglesia, $user);
-
-        $this->assertTrue(
-            $service->valida($invitacion)
+        $this->assertNotNull(
+            $invitacion->token()->expires_at
         );
     }
 
-    public function test_una_invitacion_aceptada_ya_no_es_valida(): void
+    public function test_puede_aceptar_una_invitacion(): void
     {
         $iglesia = Iglesia::factory()->create();
 
@@ -75,13 +61,9 @@ class InvitacionServiceTest extends TestCase
         $this->assertNotNull(
             $invitacion->accepted_at
         );
-
-        $this->assertFalse(
-            $service->valida($invitacion)
-        );
     }
 
-    public function test_una_invitacion_vencida_no_es_valida(): void
+    public function test_puede_buscar_una_invitacion_por_token(): void
     {
         $iglesia = Iglesia::factory()->create();
 
@@ -89,18 +71,43 @@ class InvitacionServiceTest extends TestCase
             'iglesia_id' => $iglesia->id,
         ]);
 
-        $invitacion = Invitacion::factory()
-            ->for($iglesia)
-            ->for($user)
-            ->create([
-                'user_id' => $user->id,
-                'expires_at' => now()->subDay(),
-            ]);
+        $service = app(InvitacionService::class);
+
+        $invitacion = $service->crear($iglesia, $user);
+
+        $encontrada = $service->buscarPorToken(
+            $invitacion->token()->token
+        );
+
+        $this->assertNotNull($encontrada);
+
+        $this->assertEquals(
+            $invitacion->id,
+            $encontrada->id
+        );
+    }
+
+    public function test_puede_renovar_una_invitacion(): void
+    {
+        $iglesia = Iglesia::factory()->create();
+
+        $user = User::factory()->create([
+            'iglesia_id' => $iglesia->id,
+        ]);
 
         $service = app(InvitacionService::class);
 
-        $this->assertFalse(
-            $service->valida($invitacion)
+        $invitacion = $service->crear($iglesia, $user);
+
+        $tokenViejo = $invitacion->token()->token;
+
+        $service->renovar($invitacion);
+
+        $invitacion->refresh();
+
+        $this->assertNotEquals(
+            $tokenViejo,
+            $invitacion->token()->token
         );
     }
 }

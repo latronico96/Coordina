@@ -2,36 +2,35 @@
 
 namespace App\Mail;
 
-use App\Models\Invitacion;
+use App\Models\Asignacion;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class InvitacionMail extends Mailable
+class EventoOrganizadoMail extends Mailable
 {
     use Queueable, SerializesModels;
 
     public function __construct(
-        public Invitacion $invitacion
+        public Asignacion $asignacion
     ) {}
 
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Invitación a Coordina',
+            subject: 'Nueva asignación en Coordina'
         );
     }
 
     public function content(): Content
     {
         return new Content(
-            view: 'emails.invitacion',
+            view: 'emails.evento-asignado',
             with: [
-                'invitacion' => $this->invitacion,
-                'url' => route('invitacion.aceptar', $this->invitacion->token()->token),
-            ],
+                'asignacion' => $this->asignacion,
+            ]
         );
     }
 

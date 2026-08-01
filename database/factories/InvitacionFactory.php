@@ -6,7 +6,6 @@ use App\Models\Iglesia;
 use App\Models\Invitacion;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Str;
 
 /**
  * @extends Factory<Invitacion>
@@ -25,24 +24,6 @@ class InvitacionFactory extends Factory
 
             'rol' => 'admin-iglesia',
 
-            'token' => Str::random(64),
-
-            'expires_at' => now()->addDays(2),
-
         ];
-    }
-
-    public function aceptada()
-    {
-        return $this->state([
-            'accepted_at' => now(),
-        ]);
-    }
-
-    public function vencida()
-    {
-        return $this->state([
-            'expires_at' => now()->subDay(),
-        ]);
     }
 }

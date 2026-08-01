@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\ActionTokenType;
 use App\Enums\RolUsuario;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -35,13 +36,10 @@ class Invitacion extends Model
         'user_id',
         'email',
         'rol',
-        'token',
-        'expires_at',
         'accepted_at',
     ];
 
     protected $casts = [
-        'expires_at' => 'datetime',
         'accepted_at' => 'datetime',
         'rol' => RolUsuario::class,
     ];
@@ -59,7 +57,7 @@ class Invitacion extends Model
     public function esValida(): bool
     {
         return ! $this->accepted_at
-            && $this->expires_at->isFuture();
+            && $this->getTokenAttribute()->valido();
     }
 
     public function estado(): string
@@ -68,10 +66,33 @@ class Invitacion extends Model
             return 'aceptada';
         }
 
-        if ($this->expires_at->isPast()) {
+        if ($this->getTokenAttribute()->expires_at->isPast()) {
             return 'vencida';
         }
 
         return 'pendiente';
+    }
+
+    public function getTokenAttribute(): ?ActionToken
+    {
+        return ActionToken::query()
+            ->where('type', ActionTokenType::INVITACION)
+            ->whereJsonContains('payload->invitacion_id', $this->id)
+            ->first();
+    }
+
+    public function token(): ?ActionToken
+    {
+        return ActionToken::query()
+            ->where('tipo', ActionTokenType::INVITACION)
+            ->whereJsonContains('payload->invitacion_id', $this->id)
+            ->first();
+    }
+
+    public function url(): ?string
+    {
+        return $this->token()
+            ? route('invitacion.aceptar', $this->token()->token)
+            : null;
     }
 }

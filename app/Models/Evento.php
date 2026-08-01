@@ -26,6 +26,7 @@ use Illuminate\Support\Facades\Auth;
  * @property-read Collection<int, EventoRol> $rolesRequeridos
  * @property-read int|null $roles_requeridos_count
  * @property-read Collection<int, EventoHistorial> $historial
+ * @property-read string $google_calendar_event_id
  *
  * @method static \Database\Factories\EventoFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Evento newModelQuery()
@@ -54,6 +55,7 @@ class Evento extends Model
         'fecha',
         'hora_inicio',
         'estado',
+        'google_calendar_event_id',
     ];
 
     protected $casts = [
@@ -191,54 +193,6 @@ class Evento extends Model
 
         return (int) floor(
             ($asignados / $requeridos) * 100
-        );
-    }
-
-    public function organizar(): void
-    {
-        if (! $this->puedeOrganizar()) {
-            abort(403);
-        }
-
-        $this->update([
-            'estado' => EstadoEvento::ORGANIZADO,
-        ]);
-
-        $this->registrarHistorial(
-            'organizado',
-            'Evento organizado.'
-        );
-    }
-
-    public function realizar(): void
-    {
-        if (! $this->puedeRealizar()) {
-            abort(403);
-        }
-
-        $this->update([
-            'estado' => EstadoEvento::REALIZADO,
-        ]);
-
-        $this->registrarHistorial(
-            'realizado',
-            'Evento realizado.'
-        );
-    }
-
-    public function cancelar(): void
-    {
-        if (! $this->puedeCancelar()) {
-            abort(403);
-        }
-
-        $this->update([
-            'estado' => EstadoEvento::CANCELADO,
-        ]);
-
-        $this->registrarHistorial(
-            'cancelado',
-            'Evento cancelado.'
         );
     }
 

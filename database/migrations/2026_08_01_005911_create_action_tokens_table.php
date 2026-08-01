@@ -11,26 +11,30 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('invitacions', function (Blueprint $table) {
+        Schema::create('action_tokens', function (Blueprint $table) {
             $table->id();
 
-            $table->foreignId('iglesia_id')
-                ->constrained()
-                ->cascadeOnDelete();
+            $table->string('token', 64)->unique();
 
-            $table->string('email');
-
-            $table->string('rol');
-
-            $table->timestamp('accepted_at')
-                ->nullable();
+            $table->string('tipo');
 
             $table->foreignId('user_id')
                 ->nullable()
                 ->constrained()
                 ->nullOnDelete();
 
+            $table->json('payload')
+                ->nullable();
+
+            $table->timestamp('expires_at');
+
+            $table->timestamp('used_at')
+                ->nullable();
+
             $table->timestamps();
+
+            $table->index('tipo');
+            $table->index('expires_at');
         });
     }
 
@@ -39,6 +43,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('invitacions');
+        Schema::dropIfExists('action_tokens');
     }
 };

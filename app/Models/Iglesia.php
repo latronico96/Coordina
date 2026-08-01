@@ -14,6 +14,13 @@ use Illuminate\Support\Carbon;
  * @property string $nombre
  * @property string|null $direccion
  * @property int $activo
+ * @property string $logo_url
+ * @property string $color_primario
+ * @property string $color_secundario
+ * @property bool $google_calendar_habilitado'
+ * @property string $google_calendar_id
+ * @property string $email_contacto
+ * @property string $telefono_contacto
  * @property-read Collection<int, Evento> $eventos
  * @property-read int|null $eventos_count
  * @property-read Collection<int, EventoRecurrente> $eventosRecurrentes
@@ -46,6 +53,13 @@ class Iglesia extends Model
         'nombre',
         'direccion',
         'activo',
+        'logo_url',
+        'color_primario',
+        'color_secundario',
+        'google_calendar_habilitado',
+        'google_calendar_id',
+        'email_contacto',
+        'telefono_contacto',
     ];
 
     public function usuarios()

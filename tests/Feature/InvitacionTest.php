@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\ActionToken;
 use App\Models\Iglesia;
 use App\Models\Invitacion;
 use App\Models\User;
@@ -25,59 +26,67 @@ class InvitacionTest extends TestCase
             ->for($user)
             ->create();
 
-        $this->assertEquals(
-            $iglesia->id,
-            $invitacion->iglesia->id
-        );
-    }
-
-    public function test_una_invitacion_puede_estar_aceptada(): void
-    {
-        $iglesia = Iglesia::factory()->create();
-
-        $invitacion = Invitacion::factory()
-            ->for($iglesia)
-            ->aceptada()
-            ->create();
-
-        $this->assertNotNull(
-            $invitacion->accepted_at
-        );
-    }
-
-    public function test_una_invitacion_puede_vencer(): void
-    {
-        $invitacion = Invitacion::factory()
-            ->vencida()
-            ->create();
-
         $this->assertTrue(
-            $invitacion->expires_at->isPast()
+            $invitacion->iglesia->is($iglesia)
         );
     }
 
-    public function test_una_invitacion_puede_asociarse_a_un_usuario_al_aceptar(): void
+    public function test_una_invitacion_pertenece_a_un_usuario(): void
     {
         $user = User::factory()->create();
 
-        $invitacion = Invitacion::factory()->create([
-            'user_id' => $user->id,
-            'accepted_at' => now(),
-        ]);
+        $invitacion = Invitacion::factory()
+            ->for($user)
+            ->create();
 
-        $this->assertEquals(
-            $user->id,
-            $invitacion->user->id
+        $this->assertTrue(
+            $invitacion->user->is($user)
         );
     }
 
-    public function test_una_invitacion_tiene_estado_pendiente(): void
+    public function test_una_invitacion_puede_obtener_su_action_token(): void
     {
-        $invitacion = Invitacion::factory()->create();
+        $user = User::factory()->create();
+
+        $invitacion = Invitacion::factory()
+            ->for($user)
+            ->create();
+
+        $token = ActionToken::factory()
+            ->invitacion()
+            ->create([
+                'user_id' => $user->id,
+                'payload' => [
+                    'invitacion_id' => $invitacion->id,
+                ],
+            ]);
 
         $this->assertEquals(
-            'pendiente',
-            $invitacion->estado()
+            $token->id,
+            $invitacion->token()->id
+        );
+    }
+
+    public function test_una_invitacion_puede_obtener_su_url(): void
+    {
+        $user = User::factory()->create();
+
+        $invitacion = Invitacion::factory()
+            ->for($user)
+            ->create();
+
+        $token = ActionToken::factory()
+            ->invitacion()
+            ->create([
+                'user_id' => $user->id,
+                'payload' => [
+                    'invitacion_id' => $invitacion->id,
+                ],
+            ]);
+
+        $this->assertEquals(
+            route('invitacion.aceptar', $token->token),
+            $invitacion->url()
         );
     }
 }

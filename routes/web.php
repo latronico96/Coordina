@@ -12,3 +12,4 @@ Route::get('/invitacion/{token}', [InvitacionController::class, 'mostrar'])
 
 Route::post('/invitacion/{token}', [InvitacionController::class, 'aceptar'])
     ->name('invitacion.confirmar');
+
