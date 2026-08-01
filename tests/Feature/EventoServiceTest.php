@@ -6,6 +6,7 @@ use App\Models\EventoRecurrente;
 use App\Models\EventoRecurrenteRol;
 use App\Models\RolServicio;
 use App\Services\EventoService;
+use App\Services\GoogleCalendarService;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -33,6 +34,11 @@ class EventoServiceTest extends TestCase
             'cantidad' => 1,
         ]);
 
+        $this->mock(GoogleCalendarService::class, function ($mock) {
+            $mock->shouldReceive('crearEvento')
+                ->never();
+        });
+        
         $service = app(EventoService::class);
 
         $fecha = Carbon::parse('2026-08-15');
