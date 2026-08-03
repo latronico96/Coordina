@@ -92,8 +92,7 @@ class EventoService
 
     private function crearEventoCalendario(Evento $evento): void
     {
-        if ($evento->iglesia->google_calendar_habilitado && $evento->iglesia->google_calendar_id)
-        {
+        if ($evento->iglesia->google_calendar_habilitado && $evento->iglesia->google_calendar_id) {
             $calendarEvent = CalendarEventBuilder::fromEvento($evento);
             $googleId = $this->googleCalendar->crearEvento(
                 $evento->iglesia->google_calendar_id,

@@ -38,7 +38,7 @@ class EventoServiceTest extends TestCase
             $mock->shouldReceive('crearEvento')
                 ->never();
         });
-        
+
         $service = app(EventoService::class);
 
         $fecha = Carbon::parse('2026-08-15');
