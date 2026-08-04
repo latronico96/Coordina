@@ -28,14 +28,14 @@ class ServidorForm
                 TextInput::make('telefono'),
 
                 TextInput::make('email')
+                    ->unique(ignoreRecord: true)
                     ->email(),
 
                 Select::make('rolesServicio')
-                    ->relationship('rolesServicio', 'nombre')
                     ->relationship(
                         'rolesServicio',
                         'nombre',
-                        modifyQueryUsing: fn ($query) => $query
+                        modifyQueryUsing: fn (Builder $query) => $query
                             ->orderBy('nombre')
                             ->whereHas(
                                 'ministerio',
@@ -43,7 +43,7 @@ class ServidorForm
                                     'iglesia_id',
                                     $user->iglesia_id,
                                 ),
-                            )
+                            ),
                     )
                     ->multiple()
                     ->searchable()

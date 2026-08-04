@@ -57,7 +57,6 @@ class EventosTable
                 SelectFilter::make('iglesia_id')
                     ->relationship('iglesia', 'nombre'),
             ])
-            ->recordUrl(null)
             ->recordActions([
                 ViewAction::make(),
             ])

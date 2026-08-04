@@ -1,42 +1,71 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <title>Invitación a Coordina</title>
-</head>
-<body>
+@extends('layouts.mail')
 
-    <h1>Has sido invitado a Coordina</h1>
+@section('content')
 
-    <p>Hola.</p>
+<h2>Has sido invitado a Coordina</h2>
 
-    <p>Has recibido una invitación para unirte a la iglesia:</p>
+<p>
+    Hola.
+</p>
 
-    <p>
-        <strong>{{ $invitacion->iglesia->nombre }}</strong>
-    </p>
+<p>
+    Has recibido una invitación para formar parte del equipo de:
+</p>
 
-    <p>
-        Rol asignado:
-        <strong>{{ $invitacion->rol->label() }}</strong>
-    </p>
+<p>
+    <strong>
+        {{ $invitacion->iglesia->nombre }}
+    </strong>
+</p>
 
-    <p>
-        Esta invitación vence el
-        <strong>{{ $invitacion->token()->expires_at->format('d/m/Y H:i') }}</strong>.
-    </p>
 
-    <p>
-        <a href="{{ $url }}">
-            Aceptar invitación
-        </a>
-    </p>
+<p>
+    Tu rol asignado es:
+</p>
 
-    <p>
-        Si el botón no funciona, copia este enlace en tu navegador:
-    </p>
+<p>
+    <strong>
+        {{ $invitacion->rol->label() }}
+    </strong>
+</p>
 
-    <p>{{ $url }}</p>
 
-</body>
-</html>
+<p>
+    Esta invitación vence el:
+</p>
+
+<p>
+    <strong>
+        {{ $invitacion->token()->expires_at->format('d/m/Y H:i') }}
+    </strong>
+</p>
+
+
+<p style="margin:30px 0">
+
+<a href="{{ $url }}"
+style="
+background:#2563eb;
+color:white;
+padding:12px 25px;
+border-radius:6px;
+text-decoration:none;
+font-weight:bold;
+">
+Aceptar invitación
+</a>
+
+</p>
+
+
+<p>
+    Si el botón no funciona, copiá este enlace:
+</p>
+
+<p>
+    <a href="{{ $url }}">
+        {{ $url }}
+    </a>
+</p>
+
+@endsection

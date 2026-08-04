@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Enums\ActionTokenType;
+use App\Enums\RolUsuario;
 use App\Mail\InvitacionMail;
 use App\Models\Iglesia;
 use App\Models\Invitacion;
@@ -19,7 +20,7 @@ class InvitacionService
     public function crear(
         Iglesia $iglesia,
         User $user,
-        string $rol = 'admin-iglesia',
+        String $rol = RolUsuario::ADMIN_IGLESIA->value,
         int $diasExpiracion = 2,
     ): Invitacion {
 
@@ -59,7 +60,7 @@ class InvitacionService
     public function crearYEnviar(
         Iglesia $iglesia,
         User $user,
-        string $rol = 'admin-iglesia',
+        string $rol = RolUsuario::ADMIN_IGLESIA->value,
         int $diasExpiracion = 2,
     ): Invitacion {
 

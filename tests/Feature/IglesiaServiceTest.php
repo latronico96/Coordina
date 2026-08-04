@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Enums\RolUsuario;
 use App\Models\Invitacion;
 use App\Models\User;
 use App\Services\IglesiaService;
@@ -42,7 +43,7 @@ class IglesiaServiceTest extends TestCase
         );
 
         $this->assertTrue(
-            $usuario->hasRole('admin-iglesia')
+            $usuario->hasAnyRole(RolUsuario::administracionIglesia())
         );
 
         $this->assertDatabaseHas('invitacions', [

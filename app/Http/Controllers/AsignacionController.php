@@ -4,11 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Services\AsignacionService;
 
-class AsignacionConfirmacionController extends Controller
+class AsignacionController extends Controller
 {
     public function mostrar(
         string $token,
-        AsignacionService $service
+        AsignacionService $service,
     ) {
         $asignacion = $service->buscarPorToken($token);
 
@@ -24,7 +24,7 @@ class AsignacionConfirmacionController extends Controller
 
     public function confirmar(
         string $token,
-        AsignacionService $service
+        AsignacionService $service,
     ) {
         $service->confirmarDesdeToken($token);
 
@@ -36,7 +36,7 @@ class AsignacionConfirmacionController extends Controller
 
     public function rechazar(
         string $token,
-        AsignacionService $service
+        AsignacionService $service,
     ) {
         $service->rechazarDesdeToken($token);
 

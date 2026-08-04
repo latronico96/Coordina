@@ -2,8 +2,10 @@
 
 namespace Database\Factories;
 
+use App\Enums\RolUsuario;
 use App\Models\Iglesia;
 use App\Models\Invitacion;
+use App\Models\RolServicio;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -22,7 +24,7 @@ class InvitacionFactory extends Factory
 
             'email' => fake()->safeEmail(),
 
-            'rol' => 'admin-iglesia',
+            'rol' => RolUsuario::ADMIN_IGLESIA->value
 
         ];
     }

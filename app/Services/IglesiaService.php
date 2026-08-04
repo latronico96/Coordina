@@ -2,12 +2,14 @@
 
 namespace App\Services;
 
+use App\Enums\RolUsuario;
 use App\Models\Iglesia;
 use App\Models\User;
 use Filament\Notifications\Notification;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
+use Illuminate\Validation\ValidationException;
 
 class IglesiaService
 {
@@ -17,6 +19,11 @@ class IglesiaService
 
     public function crearConAdministrador(array $datos): Iglesia
     {
+        if (User::where('email', $datos['admin_email'])->exists()) {
+            throw ValidationException::withMessages([
+                'email' => 'Este email ya está registrado. Utilice otro email.',
+            ]);
+        }
         return DB::transaction(function () use ($datos) {
 
             $iglesia = Iglesia::create([
@@ -39,7 +46,7 @@ class IglesiaService
                 'iglesia_id' => $iglesia->id,
             ]);
 
-            $usuario->assignRole('admin-iglesia');
+            $usuario->assignRole(RolUsuario::ADMIN_IGLESIA->value);
 
             $this->invitacionService->crearYEnviar($iglesia, $usuario);
             Notification::make()

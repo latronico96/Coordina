@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\RolServicios;
 
+use App\Enums\RolUsuario;
 use App\Filament\Resources\EntidadDeIglesiaResource;
 use App\Filament\Resources\RolServicios\Pages\CreateRolServicio;
 use App\Filament\Resources\RolServicios\Pages\EditRolServicio;
@@ -71,11 +72,7 @@ class RolServicioResource extends EntidadDeIglesiaResource
         /** @var User|null $user */
         $user = Auth::user();
 
-        return $user?->hasAnyRole([
-            'admin-iglesia',
-            'coordinador',
-            'lider-ministerio',
-        ]);
+        return $user?->hasAnyRole(RolUsuario::ministerios());
     }
 
     protected static function aplicarFiltroIglesia(

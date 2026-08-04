@@ -2,6 +2,7 @@
 
 namespace App\Mail;
 
+use App\Models\ActionToken;
 use App\Models\Asignacion;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
@@ -14,7 +15,9 @@ class EventoOrganizadoMail extends Mailable
     use Queueable, SerializesModels;
 
     public function __construct(
-        public Asignacion $asignacion
+        public Asignacion $asignacion,
+        public string $url,
+        public ActionToken $token,
     ) {}
 
     public function envelope(): Envelope
@@ -30,6 +33,8 @@ class EventoOrganizadoMail extends Mailable
             view: 'emails.evento-asignado',
             with: [
                 'asignacion' => $this->asignacion,
+                'url' => $this->url,
+                'token' => $this->token,
             ]
         );
     }

@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Ministerios;
 
+use App\Enums\RolUsuario;
 use App\Filament\Resources\EntidadDeIglesiaResource;
 use App\Filament\Resources\Ministerios\Pages\CreateMinisterio;
 use App\Filament\Resources\Ministerios\Pages\EditMinisterio;
@@ -70,10 +71,6 @@ class MinisterioResource extends EntidadDeIglesiaResource
         /** @var User|null $user */
         $user = Auth::user();
 
-        return $user?->hasAnyRole([
-            'admin-iglesia',
-            'coordinador',
-            'lider-ministerio',
-        ]);
+        return $user?->hasAnyRole(RolUsuario::ministerios());
     }
 }

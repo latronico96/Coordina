@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Servidors;
 
+use App\Enums\RolUsuario;
 use App\Filament\Resources\EntidadDeIglesiaResource;
 use App\Filament\Resources\Servidors\Pages\CreateServidor;
 use App\Filament\Resources\Servidors\Pages\EditServidor;
@@ -18,6 +19,7 @@ use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Database\Eloquent\Builder;
 use UnitEnum;
 
 class ServidorResource extends EntidadDeIglesiaResource
@@ -71,10 +73,24 @@ class ServidorResource extends EntidadDeIglesiaResource
         /** @var User|null $user */
         $user = Auth::user();
 
-        return $user?->hasAnyRole([
-            'admin-iglesia',
-            'coordinador',
-            'lider-ministerio',
-        ]);
+        return $user?->hasAnyRole(RolUsuario::ministerios());
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        $query = parent::getEloquentQuery();
+
+        /** @var User|null $user */
+        $user = Auth::user();
+
+        if (! $user) {
+            return $query->whereRaw('1 = 0');
+        }
+
+        if ($user->hasAnyRole(RolUsuario::coordinacion())) {
+            return $query;
+        }
+
+        return static::aplicarFiltroIglesia($query, $user);
     }
 }

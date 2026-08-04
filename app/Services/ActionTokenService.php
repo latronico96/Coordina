@@ -15,6 +15,9 @@ class ActionTokenService
         array $payload = [],
         int $dias = 2,
     ): ActionToken {
+        foreach ($payload as $campo => $valor) {
+            $this->revocarPorPayload($tipo, $campo, $valor);
+        }
 
         return ActionToken::create([
             'token' => Str::random(64),
@@ -75,5 +78,32 @@ class ActionTokenService
         $token->update([
             'used_at' => now(),
         ]);
+    }
+
+    public function buscarPorPayload(
+        ActionTokenType $tipo,
+        string $campo,
+        mixed $valor,
+    ): ?ActionToken {
+        return ActionToken::query()
+            ->where('tipo', $tipo)
+            ->whereJsonContains("payload->{$campo}", $valor)
+            ->whereNull('used_at')
+            ->latest()
+            ->first();
+    }
+
+    public function revocarPorPayload(
+        ActionTokenType $tipo,
+        string $campo,
+        mixed $valor,
+    ): void {
+        ActionToken::query()
+            ->where('tipo', $tipo)
+            ->whereJsonContains("payload->{$campo}", $valor)
+            ->whereNull('used_at')
+            ->update([
+                'used_at' => now(),
+            ]);
     }
 }

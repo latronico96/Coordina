@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Eventos;
 
+use App\Enums\RolUsuario;
 use App\Filament\Resources\EntidadDeIglesiaResource;
 use App\Filament\Resources\Eventos\Pages\CreateEvento;
 use App\Filament\Resources\Eventos\Pages\EditEvento;
@@ -75,10 +76,6 @@ class EventoResource extends EntidadDeIglesiaResource
         /** @var User|null $user */
         $user = Auth::user();
 
-        return $user?->hasAnyRole([
-            'admin-iglesia',
-            'coordinador',
-            'lider-ministerio',
-        ]);
+        return $user?->hasAnyRole(RolUsuario::coordinacion());
     }
 }

@@ -20,7 +20,7 @@ trait PerteneceAIglesia
             return $query->whereRaw('1 = 0');
         }
 
-        if ($user->hasRole(RolUsuario::SUPER_ADMIN)) {
+        if ($user->hasAnyRole(RolUsuario::administracionGlobal())) {
             return $query;
         }
 

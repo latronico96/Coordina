@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Invitacions;
 
+use App\Enums\RolUsuario;
 use App\Filament\Resources\EntidadDeIglesiaResource;
 use App\Filament\Resources\Invitacions\Pages\CreateInvitacion;
 use App\Filament\Resources\Invitacions\Pages\EditInvitacion;
@@ -74,9 +75,6 @@ class InvitacionResource extends EntidadDeIglesiaResource
         /** @var User|null $user */
         $user = Auth::user();
 
-        return $user?->hasAnyRole([
-            'admin-iglesia',
-            'coordinador',
-        ]);
+        return $user?->hasAnyRole(RolUsuario::ministerios());
     }
 }

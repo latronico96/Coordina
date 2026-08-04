@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Enums\RolUsuario;
 use App\Models\ActionToken;
 use App\Models\Asignacion;
 use App\Models\Evento;
@@ -118,7 +119,7 @@ class DemoSeeder2 extends Seeder
                 'password' => '12345678',
             ]);
 
-        $admin->assignRole('admin-iglesia');
+        $admin->assignRole(RolUsuario::ADMIN_IGLESIA->value);
 
         User::factory(2)
             ->for($iglesia)

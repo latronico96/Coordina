@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Asignacions;
 
+use App\Enums\RolUsuario;
 use App\Filament\Resources\Asignacions\Pages\CreateAsignacion;
 use App\Filament\Resources\Asignacions\Pages\EditAsignacion;
 use App\Filament\Resources\Asignacions\Pages\ListAsignacions;
@@ -84,10 +85,6 @@ class AsignacionResource extends EntidadDeIglesiaResource
         /** @var User|null $user */
         $user = Auth::user();
 
-        return $user?->hasAnyRole([
-            'admin-iglesia',
-            'coordinador',
-            'lider-ministerio',
-        ]);
+        return $user?->hasAnyRole(RolUsuario::coordinacion());
     }
 }

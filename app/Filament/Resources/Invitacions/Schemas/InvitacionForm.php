@@ -12,6 +12,7 @@ class InvitacionForm
         return $schema
             ->components([
                 TextInput::make('email')
+                    ->unique(ignoreRecord: true)
                     ->label('Email address')
                     ->email()
                     ->required(),

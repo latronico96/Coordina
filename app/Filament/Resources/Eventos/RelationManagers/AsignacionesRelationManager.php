@@ -5,6 +5,8 @@ namespace App\Filament\Resources\Eventos\RelationManagers;
 use App\Models\Asignacion;
 use App\Models\Evento;
 use App\Models\EventoRol;
+use App\Services\AsignacionService;
+use Filament\Actions\Action;
 use Filament\Actions\CreateAction;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\EditAction;
@@ -164,6 +166,28 @@ class AsignacionesRelationManager extends RelationManager
 
             ])
             ->recordActions([
+                Action::make('confirmar')
+                    ->label('')
+                    ->tooltip('Confirmar asistencia')
+                    ->icon('heroicon-o-check')
+                    ->color('success')
+                    ->visible(fn (Asignacion $record) => $record->estado === 'pendiente')
+                    ->requiresConfirmation()
+                    ->action(function (Asignacion $record) {
+                        app(AsignacionService::class)->confirmar($record);
+                    })
+                    ->iconButton(),
+                Action::make('rechazar')
+                    ->label('')
+                    ->tooltip('Rechazar asistencia')
+                    ->icon('heroicon-o-x-mark')
+                    ->color('danger')
+                    ->visible(fn (Asignacion $record) => $record->estado === 'pendiente')
+                    ->requiresConfirmation()
+                    ->action(function (Asignacion $record) {
+                        app(AsignacionService::class)->rechazar($record);
+                    })
+                    ->iconButton(),
                 EditAction::make()
                     ->after(function (EditAction $action) {
                         /** @var Asignacion $asignacion */
@@ -179,7 +203,10 @@ class AsignacionesRelationManager extends RelationManager
                                 ucfirst($asignacion->estado)
                             )
                         );
-                    }),
+                    })
+                    ->label('')
+                    ->tooltip('Editar')
+                    ->iconButton(),
                 DeleteAction::make()
                     ->before(function (DeleteAction $action) {
                         /** @var Asignacion $asignacion */
@@ -194,7 +221,10 @@ class AsignacionesRelationManager extends RelationManager
                                 $asignacion->eventoRol->rolServicio->nombre
                             )
                         );
-                    }),
+                    })
+                    ->label('')
+                    ->tooltip('Eliminar')
+                    ->iconButton(),
             ])
             ->headerActions([
                 CreateAction::make()

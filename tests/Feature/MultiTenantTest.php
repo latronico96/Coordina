@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Enums\RolUsuario;
 use App\Filament\Resources\Eventos\EventoResource;
 use App\Models\Evento;
 use App\Models\Iglesia;
@@ -46,7 +47,7 @@ class MultiTenantTest extends TestCase
         $usuario = User::factory()
             ->for($iglesiaA)
             ->create();
-        $usuario->assignRole('admin-iglesia');
+        $usuario->assignRole(RolUsuario::ADMIN_IGLESIA->value);
         Evento::factory()
             ->for($iglesiaA)
             ->create();

@@ -14,6 +14,8 @@ class EventoService
     public function __construct(
         private readonly GoogleCalendarService $googleCalendar,
         private readonly InvitacionService $invitacionService,
+        private readonly AsignacionService $asignacionService,
+        private readonly EventoNotificacionService $eventoNotificacionService,
     ) {}
 
     public function crearDesdeRecurrente(
@@ -54,10 +56,12 @@ class EventoService
             'organizado',
             'Evento organizado.'
         );
-
-        app(EventoNotificacionService::class)
-            ->notificarServidores($evento);
+        $this->notificarServidores($evento);
         $this->crearEventoCalendario($evento);
+        $evento->registrarHistorial(
+            'evento_organizado',
+            'Se enviaron invitaciones a los servidores asignados.'
+        );
     }
 
     public function realizar(Evento $evento): void
@@ -101,6 +105,22 @@ class EventoService
             $evento->update([
                 'google_calendar_event_id' => $googleId,
             ]);
+        }
+    }
+
+    private function notificarServidores(Evento $evento): void
+    {
+        foreach ($evento->asignaciones as $asignacion) {
+            $token = $this->asignacionService->enviarConfirmacion($asignacion);
+            $url = route(
+                'asignaciones.mostrar',
+                $token->token
+            );
+            $this->eventoNotificacionService->notificarServidor(
+                $asignacion,
+                $url,
+                $token,
+            );
         }
     }
 }

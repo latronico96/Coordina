@@ -106,10 +106,6 @@ class User extends Authenticatable
 
     public function canAccessFilament(): bool
     {
-        return $this->hasAnyRole([
-            RolUsuario::SUPER_ADMIN,
-            RolUsuario::ADMIN_IGLESIA,
-            RolUsuario::LIDER_MINISTERIO,
-        ]);
+        return $this->hasAnyRole(RolUsuario::ministerios());
     }
 }

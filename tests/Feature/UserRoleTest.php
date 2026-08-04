@@ -16,10 +16,10 @@ class UserRoleTest extends TestCase
     {
         $user = User::factory()->create();
 
-        $user->assignRole(RolUsuario::SUPER_ADMIN);
+        $user->assignRole(RolUsuario::SUPER_ADMIN->value);
 
         $this->assertTrue(
-            $user->hasRole(RolUsuario::SUPER_ADMIN)
+            $user->hasRole(RolUsuario::SUPER_ADMIN->value)
         );
     }
 
@@ -31,10 +31,10 @@ class UserRoleTest extends TestCase
             'iglesia_id' => $iglesia->id,
         ]);
 
-        $user->assignRole('admin-iglesia');
+        $user->assignRole(RolUsuario::ADMIN_IGLESIA->value);
 
         $this->assertTrue(
-            $user->hasRole('admin-iglesia')
+                $user->hasRole(RolUsuario::ADMIN_IGLESIA->value)
         );
 
         $this->assertEquals(

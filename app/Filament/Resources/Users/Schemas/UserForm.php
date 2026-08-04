@@ -17,6 +17,7 @@ class UserForm
                 TextInput::make('email')
                     ->label('Email address')
                     ->email()
+                    ->unique(ignoreRecord: true)
                     ->required(),
                 DateTimePicker::make('email_verified_at'),
                 TextInput::make('password')

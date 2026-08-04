@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Services\InvitacionService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class InvitacionController extends Controller
@@ -14,7 +15,7 @@ class InvitacionController extends Controller
     ) {
         $invitacion = $service->buscarPorToken($token);
 
-        if (! $invitacion) {
+        if (! $invitacion || ! $service->valida($invitacion)) {
             abort(404);
         }
 
@@ -53,8 +54,9 @@ class InvitacionController extends Controller
         ]);
 
         $service->aceptar($invitacion);
+        Auth::login($usuario);
 
-        return redirect('/admin/login')
+        return redirect('/admin')
             ->with('success', 'Cuenta activada correctamente');
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\EventoRecurrentes;
 
+use App\Enums\RolUsuario;
 use App\Filament\Resources\EntidadDeIglesiaResource;
 use App\Filament\Resources\EventoRecurrentes\Pages\CreateEventoRecurrente;
 use App\Filament\Resources\EventoRecurrentes\Pages\EditEventoRecurrente;
@@ -71,10 +72,6 @@ class EventoRecurrenteResource extends EntidadDeIglesiaResource
         /** @var User|null $user */
         $user = Auth::user();
 
-        return $user?->hasAnyRole([
-            'admin-iglesia',
-            'coordinador',
-            'lider-ministerio',
-        ]);
+        return $user?->hasAnyRole(RolUsuario::coordinacion());
     }
 }

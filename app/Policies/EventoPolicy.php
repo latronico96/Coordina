@@ -13,11 +13,7 @@ class EventoPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->hasAnyRole([
-            RolUsuario::SUPER_ADMIN,
-            RolUsuario::ADMIN_IGLESIA,
-            RolUsuario::LIDER_MINISTERIO,
-        ]);
+        return $user->hasAnyRole(RolUsuario::ministerios());
     }
 
     /**
@@ -25,7 +21,7 @@ class EventoPolicy
      */
     public function view(User $user, Evento $evento): bool
     {
-        if ($user->hasRole(RolUsuario::SUPER_ADMIN)) {
+        if ($user->hasRole(RolUsuario::administracionGlobal())) {
             return true;
         }
 
@@ -37,10 +33,7 @@ class EventoPolicy
      */
     public function create(User $user): bool
     {
-        return $user->hasAnyRole([
-            RolUsuario::SUPER_ADMIN,
-            RolUsuario::ADMIN_IGLESIA,
-        ]);
+        return $user->hasAnyRole( RolUsuario::administracionIglesia());
     }
 
     /**
@@ -48,7 +41,7 @@ class EventoPolicy
      */
     public function update(User $user, Evento $evento): bool
     {
-        if ($user->hasRole(RolUsuario::SUPER_ADMIN)) {
+        if ($user->hasRole(RolUsuario::administracionGlobal())) {
             return true;
         }
 
@@ -65,7 +58,7 @@ class EventoPolicy
      */
     public function delete(User $user, Evento $evento): bool
     {
-        if ($user->hasRole(RolUsuario::SUPER_ADMIN)) {
+        if ($user->hasRole(RolUsuario::administracionGlobal())) {
             return true;
         }
 

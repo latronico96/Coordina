@@ -2,6 +2,9 @@
 
 namespace App\Filament\Resources\Asignacions\Tables;
 
+use App\Models\Asignacion;
+use App\Services\AsignacionService;
+use Filament\Actions\Action;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
@@ -35,7 +38,7 @@ class AsignacionsTable
                     ->label('Servidor')
                     ->formatStateUsing(
                         fn ($state, $record) => $record->servidor->nombre.' '.
-                        $record->servidor->apellido
+                            $record->servidor->apellido
                     )
                     ->searchable(),
 
@@ -56,8 +59,36 @@ class AsignacionsTable
                 //
             ])
             ->recordActions([
-                ViewAction::make(),
-                EditAction::make(),
+                Action::make('confirmar')
+                    ->label('')
+                    ->tooltip('Confirmar asistencia')
+                    ->icon('heroicon-o-check')
+                    ->color('success')
+                    ->visible(fn (Asignacion $record) => $record->estado === 'pendiente')
+                    ->requiresConfirmation()
+                    ->action(function (Asignacion $record) {
+                        app(AsignacionService::class)->confirmar($record);
+                    })
+                    ->iconButton(),
+                Action::make('rechazar')
+                    ->label('')
+                    ->tooltip('Rechazar asistencia')
+                    ->icon('heroicon-o-x-mark')
+                    ->color('danger')
+                    ->visible(fn (Asignacion $record) => $record->estado === 'pendiente')
+                    ->requiresConfirmation()
+                    ->action(function (Asignacion $record) {
+                        app(AsignacionService::class)->rechazar($record);
+                    })
+                    ->iconButton(),
+                ViewAction::make()
+                    ->label('')
+                    ->tooltip('Abrir')
+                    ->iconButton(),
+                EditAction::make()
+                    ->label('')
+                    ->tooltip('Editar')
+                    ->iconButton(),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([

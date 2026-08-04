@@ -14,7 +14,7 @@ use Illuminate\Support\Carbon;
  * @property int $iglesia_id
  * @property int|null $user_id
  * @property string $email
- * @property RolUsuario $rol
+ * @property RolServicio $rol
  * @property string $token
  * @property Carbon $expires_at
  * @property Carbon|null $accepted_at
@@ -57,7 +57,7 @@ class Invitacion extends Model
     public function esValida(): bool
     {
         return ! $this->accepted_at
-            && $this->getTokenAttribute()->valido();
+            && $this->token()->valido();
     }
 
     public function estado(): string
@@ -66,19 +66,11 @@ class Invitacion extends Model
             return 'aceptada';
         }
 
-        if ($this->getTokenAttribute()->expires_at->isPast()) {
+        if ($this->token()->expires_at->isPast()) {
             return 'vencida';
         }
 
         return 'pendiente';
-    }
-
-    public function getTokenAttribute(): ?ActionToken
-    {
-        return ActionToken::query()
-            ->where('type', ActionTokenType::INVITACION)
-            ->whereJsonContains('payload->invitacion_id', $this->id)
-            ->first();
     }
 
     public function token(): ?ActionToken

@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Enums\RolUsuario;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Role;
 
@@ -12,13 +13,7 @@ class RolesSeeder extends Seeder
      */
     public function run(): void
     {
-        $roles = [
-            'super-admin',
-            'admin-iglesia',
-            'coordinador',
-            'lider-ministerio',
-            'servidor',
-        ];
+        $roles = RolUsuario::todos();
 
         foreach ($roles as $role) {
             Role::firstOrCreate([

@@ -70,6 +70,6 @@ class UserResource extends Resource
         /** @var User|null $user */
         $user = Auth::user();
 
-        return $user?->hasRole(RolUsuario::SUPER_ADMIN);
+        return $user?->hasRole(RolUsuario::administracionGlobal());
     }
 }

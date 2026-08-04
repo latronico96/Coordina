@@ -26,6 +26,8 @@ use Illuminate\Support\Carbon;
  * @property-read Collection<int, RolServicio> $rolesServicio
  * @property-read int|null $roles_servicio_count
  * @property-read User|null $user
+ * @property-read bool $tieneUsuario
+ * @property-read bool $usuarioActivo
  *
  * @method static \Database\Factories\ServidorFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Servidor newModelQuery()
@@ -84,5 +86,15 @@ class Servidor extends Model
     public function asignaciones()
     {
         return $this->hasMany(Asignacion::class);
+    }
+
+    public function tieneUsuario(): bool
+    {
+        return $this->user !== null;
+    }
+
+    public function usuarioActivo(): bool
+    {
+        return $this->tieneUsuario() && $this->user?->activated_at !== null;
     }
 }
