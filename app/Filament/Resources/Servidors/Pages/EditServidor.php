@@ -26,10 +26,10 @@ class EditServidor extends EditRecord
                 ->label('Crear usuario e invitar')
                 ->icon('heroicon-o-user-plus')
                 ->color('success')
-                ->visible(fn() => ! $this->servidor()->tieneUsuario())
-                ->disabled(fn() => empty($this->servidor()->email))
+                ->visible(fn () => ! $this->servidor()->tieneUsuario())
+                ->disabled(fn () => empty($this->servidor()->email))
                 ->tooltip(
-                    fn() => empty($this->servidor()->email)
+                    fn () => empty($this->servidor()->email)
                         ? 'Debe completar un email para crear el usuario.'
                         : null
                 )
@@ -73,7 +73,7 @@ class EditServidor extends EditRecord
                 ->icon('heroicon-o-paper-airplane')
                 ->color('warning')
                 ->visible(
-                    fn() => $this->servidor()->tieneUsuario()
+                    fn () => $this->servidor()->tieneUsuario()
                         && ! $this->servidor()->usuarioActivo()
                 )
                 ->requiresConfirmation()
