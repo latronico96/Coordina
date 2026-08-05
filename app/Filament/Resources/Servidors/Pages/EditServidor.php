@@ -15,7 +15,6 @@ class EditServidor extends EditRecord
 {
     protected static string $resource = ServidorResource::class;
 
-
     protected function getHeaderActions(): array
     {
         return [
@@ -27,11 +26,12 @@ class EditServidor extends EditRecord
                 ->label('Crear usuario e invitar')
                 ->icon('heroicon-o-user-plus')
                 ->color('success')
-                ->visible(fn () => ! $this->record->tieneUsuario())
-                ->disabled(fn () => empty($this->record->email))
-                ->tooltip(fn () => empty($this->record->email)
-                    ? 'Debe completar un email para crear el usuario.'
-                    : null
+                ->visible(fn() => ! $this->servidor()->tieneUsuario())
+                ->disabled(fn() => empty($this->servidor()->email))
+                ->tooltip(
+                    fn() => empty($this->servidor()->email)
+                        ? 'Debe completar un email para crear el usuario.'
+                        : null
                 )
                 ->requiresConfirmation()
                 ->modalHeading('Crear usuario e invitar')
@@ -68,14 +68,13 @@ class EditServidor extends EditRecord
                     );
                 }),
 
-
             Action::make('reenviarInvitacion')
                 ->label('Reenviar invitación')
                 ->icon('heroicon-o-paper-airplane')
                 ->color('warning')
                 ->visible(
-                    fn () => $this->record->tieneUsuario()
-                        && ! $this->record->usuarioActivo()
+                    fn() => $this->servidor()->tieneUsuario()
+                        && ! $this->servidor()->usuarioActivo()
                 )
                 ->requiresConfirmation()
                 ->action(function () {
@@ -92,5 +91,13 @@ class EditServidor extends EditRecord
                         ->send();
                 }),
         ];
+    }
+
+    private function servidor(): Servidor
+    {
+        /** @var Servidor $servidor */
+        $servidor = $this->record;
+
+        return $servidor;
     }
 }

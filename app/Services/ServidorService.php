@@ -29,7 +29,7 @@ class ServidorService
         }
 
         $user = User::create([
-            'name' => trim($servidor->nombre . ' ' . $servidor->apellido),
+            'name' => trim($servidor->nombre.' '.$servidor->apellido),
             'email' => $servidor->email,
             'password' => Hash::make(Str::random(32)),
             'iglesia_id' => $servidor->iglesia_id,

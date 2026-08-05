@@ -24,6 +24,7 @@ class IglesiaService
                 'email' => 'Este email ya está registrado. Utilice otro email.',
             ]);
         }
+
         return DB::transaction(function () use ($datos) {
 
             $iglesia = Iglesia::create([

@@ -20,7 +20,7 @@ class InvitacionService
     public function crear(
         Iglesia $iglesia,
         User $user,
-        String $rol = RolUsuario::ADMIN_IGLESIA->value,
+        string $rol = RolUsuario::ADMIN_IGLESIA->value,
         int $diasExpiracion = 2,
     ): Invitacion {
 

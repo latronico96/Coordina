@@ -34,7 +34,7 @@ class UserRoleTest extends TestCase
         $user->assignRole(RolUsuario::ADMIN_IGLESIA->value);
 
         $this->assertTrue(
-                $user->hasRole(RolUsuario::ADMIN_IGLESIA->value)
+            $user->hasRole(RolUsuario::ADMIN_IGLESIA->value)
         );
 
         $this->assertEquals(

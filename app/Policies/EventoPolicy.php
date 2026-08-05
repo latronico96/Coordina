@@ -33,7 +33,7 @@ class EventoPolicy
      */
     public function create(User $user): bool
     {
-        return $user->hasAnyRole( RolUsuario::administracionIglesia());
+        return $user->hasAnyRole(RolUsuario::administracionIglesia());
     }
 
     /**
